@@ -13,7 +13,7 @@ const LoginForm = () => {
 
     const {theme} = useTheme();
     const {googleSignIn, signIn, setLoading, loading} = useAuth();
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     const location = useLocation();
     const from = location.state || '/';
 
@@ -29,9 +29,8 @@ const LoginForm = () => {
         try {
             await signIn(email, password);
             toast.success('Login Successful!');
-            navigate(from);
         } catch (error) {
-            toast.error('Login failed. Please try again', error)
+            toast.error('Login failed. Please try again', error);
         }
         finally{
             setLoading(false)
@@ -45,10 +44,11 @@ const LoginForm = () => {
             navigate(from);
         } 
         catch (error) {
-            toast.error('Login failed. Please try again', error)
+            toast.error('Login failed. Please try again', error);
+            console.log(error)
         }
         finally{
-            setLoading(false)
+            setLoading(false);
         }
     }
 

@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import NavItem from './NavItem'
 import { ModeToggle } from '@/Provider/ModeToggle'
 import { RiMenu3Fill } from "react-icons/ri";
@@ -6,28 +6,56 @@ import { RxCross2 } from "react-icons/rx";
 import { useState } from 'react';
 import { useTheme } from '@/Provider/ThemeProvider';
 import Logo from '../shared/Logo';
+import useAuth from '@/Hooks/useAuth';
+import toast from 'react-hot-toast';
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { DropdownMenuDemo } from './DropdownMenuDemo';
 
 const Navbar = () => {
 
     const { theme } = useTheme();
     const [open, setIsOpen] = useState(false);
+    const {user, logOut, setLoading} = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state || '/';
+
+    const handleLogOut = async () => {
+        try {
+            await logOut();
+            toast.success('log out succesful');
+            navigate(from);
+        } 
+        catch (error) {
+            toast.error(`log out failed. Please try again. ${error}`)
+        }
+        finally{
+            setLoading(false);
+        }
+    }
 
     const navItems = <>
         <NavItem setIsOpen={setIsOpen} navTitle={'Home'} address={'/'}></NavItem>
         <NavItem setIsOpen={setIsOpen} navTitle={'Pet Listing'} address={'/pet-listing'}></NavItem>
         <NavItem setIsOpen={setIsOpen} navTitle={'Donation Campaigns'} address={'donation-campaign'}></NavItem>
 
-        <Link to={'/login'}>
-            <button 
-            onClick={() => setIsOpen(false)}
-            className={`py-2 px-5 border border-purple-700 rounded-lg font-semibold transition hover:bg-purple-700 hover:text-white ${theme === 'light' ? 'text-black' : 'text-white'}`}>Login</button>
-        </Link>
+        {   user ? 
+                <DropdownMenuDemo></DropdownMenuDemo>
+            : 
+            <>
+                <Link to={'/login'}>
+                    <button 
+                    onClick={() => setIsOpen(false)}
+                    className={`py-2 px-5 border border-purple-700 rounded-lg font-semibold transition hover:bg-purple-700 hover:text-white ${theme === 'light' ? 'text-black' : 'text-white'}`}>Login</button>
+                </Link>
 
-        <Link to={'/register'}>
-            <button 
-            onClick={() => setIsOpen(false)}
-            className='py-2 px-5 border border-purple-700 rounded-lg font-semibold transition bg-purple-700 text-white'>Register</button>
-        </Link>
+                <Link to={'/register'}>
+                    <button 
+                    onClick={() => setIsOpen(false)}
+                    className='py-2 px-5 border border-purple-700 rounded-lg font-semibold transition bg-purple-700 text-white'>Register</button>
+                </Link>
+            </> 
+        }
     </>
 
     return (
@@ -35,7 +63,18 @@ const Navbar = () => {
             
             <div className='max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
 
-                <div>
+                <div className='lg:hidden'>
+                    {
+                        user ?
+                        <DropdownMenuDemo></DropdownMenuDemo>
+                        :
+                        <div className='hidden lg:block'>
+                            <Logo></Logo>
+                        </div>
+                    }
+                </div>
+
+                <div className='hidden lg:block'>
                     <Logo></Logo>
                 </div>
 
