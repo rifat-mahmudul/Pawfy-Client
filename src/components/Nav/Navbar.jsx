@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import logo from '../../assets/logo.png'
 import NavItem from './NavItem'
+import { ModeToggle } from '@/Provider/ModeToggle'
 
 const Navbar = () => {
 
@@ -19,9 +20,9 @@ const Navbar = () => {
     </>
 
     return (
-        <header>
+        <header className='border border-purple-800 '>
             
-            <div className='border border-purple-800 max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
+            <div className='max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
 
                 <div>
                     <Link to={'/'}>
@@ -35,6 +36,9 @@ const Navbar = () => {
                 <div>
                     <nav className='flex items-center space-x-4'>
                         {navItems}
+                        <div>
+                            <ModeToggle></ModeToggle>
+                        </div>
                     </nav>
                 </div>
 
