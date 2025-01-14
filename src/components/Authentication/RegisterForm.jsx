@@ -4,10 +4,23 @@ import { LuSquareArrowOutUpRight } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
 import { useTheme } from '@/Provider/ThemeProvider';
 import { FaGithub } from "react-icons/fa";
+import { useForm } from "react-hook-form"
+import { imageUpload } from '@/lib/utils';
 
 const RegisterForm = () => {
 
     const {theme} = useTheme();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm()
+
+    const onSubmit = async (data) => {
+        const {image} = data;
+        const photoURL = await imageUpload(image)
+    }
 
     return (
         <div className={`max-w-[90%] lg:max-w-[920px] mx-auto flex flex-col sm:flex-row sm:items-center border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
@@ -22,7 +35,7 @@ const RegisterForm = () => {
 
                 <div className='sm:px-8'>
 
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
 
                         {/* name input */}
                         <div>
@@ -30,9 +43,17 @@ const RegisterForm = () => {
                             <input 
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
                             type="text" 
-                            placeholder='Enter Your Name' 
+                            placeholder='Enter Your Name'
+                            {...register('name', {
+                                required : "Name is required"
+                            })}
                             />
                         </div>
+
+                        {
+                            errors.name &&  
+                            <p className='text-red-500 text-sm mt-1'>{errors.name.message}</p>
+                        }
 
                         {/* Image input */}
                         <div className='mt-3'>
@@ -45,12 +66,13 @@ const RegisterForm = () => {
                                     <input
                                         className='text-sm cursor-pointer w-full hidden'
                                         type='file'
-                                        name='image'
-                                        id='image'
                                         accept='image/*'
                                         hidden
+                                        {...register('image', {
+                                            required : "Photo is required"
+                                        })}
                                     />
-                                    <div className='bg-purple-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500'>
+                                    <div className='bg-purple-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-purple-700'>
                                         Upload
                                     </div>
                                     </label>
@@ -59,6 +81,11 @@ const RegisterForm = () => {
                             </div>
                         </div>
 
+                        {
+                            errors.image && 
+                            <p className='text-red-500 text-sm mt-1'>{errors.image.message}</p>
+                        }
+
                         {/* email input */}
                         <div className='mt-3'>
                             <h1 className='font-semibold mb-2'>Email</h1>
@@ -66,8 +93,20 @@ const RegisterForm = () => {
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
                             type="email" 
                             placeholder='Enter Your Email' 
+                            {...register('email', {
+                                required : "Email is required",
+                                pattern : {
+                                    value : /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                                    message : 'Invalid Email Address'
+                                }
+                            })}
                             />
                         </div>
+                        
+                        {
+                            errors.email && 
+                            <p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>
+                        }
 
                         {/* password input */}
                         <div className='mt-3'>
@@ -76,10 +115,28 @@ const RegisterForm = () => {
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
                             type="password" 
                             placeholder='Enter Your Password' 
+                            {...register('password', {
+                                required : "Password is required",
+                                minLength : {
+                                    value : 6,
+                                    message : "Password must be at least 6 characters"
+                                },
+                                pattern: {
+                                    value: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
+                                    message: "Password must include uppercase and lowercase letters",
+                                },
+                            })}
                             />
                         </div>
+                        
+                        {
+                            errors.password && 
+                            <p className='text-red-500 text-sm mt-1'>{errors.password.message}</p>
+                        }
 
-                        <button className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700`}>Login</button>
+                        <button 
+                        type='submit'
+                        className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700`}>Register</button>
 
                     </form>
 
