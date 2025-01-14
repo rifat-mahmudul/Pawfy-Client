@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import loginImg from '../../assets/login-pets.webp'
 import { LuSquareArrowOutUpRight } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
@@ -13,8 +13,10 @@ import { ImSpinner9 } from "react-icons/im";
 const RegisterForm = () => {
 
     const {theme} = useTheme();
-    const {createUser, googleSignIn, profileUpdate, logOut, loading} = useAuth();
+    const {createUser, googleSignIn, profileUpdate, logOut, loading, setLoading} = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state || '/';
 
     const {
         register,
@@ -30,10 +32,28 @@ const RegisterForm = () => {
             await createUser(email, password);
             await profileUpdate(name, photoURL);
             await logOut();
-            toast.success('Registered Successful');
+            toast.success('Registered Successful!');
             navigate('/login');
-        } catch (error) {
-            toast.error('Sign Up failed. Please try again', error)
+        } 
+        catch (error) {
+            toast.error('Registered failed. Please try again', error)
+        }
+        finally{
+            setLoading(false)
+        }
+    }
+
+    const handleGoogleLogin = async () => {
+        try {
+            await googleSignIn();
+            toast.success('Registered Successful!');
+            navigate(from);
+        } 
+        catch (error) {
+            toast.error('Registered failed. Please try again', error)
+        }
+        finally{
+            setLoading(false)
         }
     }
 
@@ -178,6 +198,8 @@ const RegisterForm = () => {
                     <div className='flex flex-col sm:flex-row sm:space-x-5'>
                         
                         <button 
+                        disabled={loading}
+                        onClick={handleGoogleLogin}
                         className='py-3 w-full mt-2 rounded-lg font-bold flex items-center justify-center space-x-2 disabled:cursor-pointer border border-purple-500'
                         >
                             <FcGoogle className='text-3xl' /> <span>Continue With Google</span>

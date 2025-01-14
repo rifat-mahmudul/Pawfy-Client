@@ -1,13 +1,33 @@
-import { Link } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import loginImg from '../../assets/login-pets.webp'
 import { LuSquareArrowOutUpRight } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
 import { useTheme } from '@/Provider/ThemeProvider';
 import { FaGithub } from "react-icons/fa";
+import useAuth from '@/Hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const LoginForm = () => {
 
     const {theme} = useTheme();
+    const {googleSignIn, signIn, setLoading} = useAuth();
+    const navigate = useNavigate;
+    const location = useLocation();
+    const from = location.state || '/';
+
+    const handleGoogleLogin = async () => {
+        try {
+            await googleSignIn();
+            toast.success('Login Successful!');
+            navigate(from);
+        } 
+        catch (error) {
+            toast.error('Login failed. Please try again', error)
+        }
+        finally{
+            setLoading(false)
+        }
+    }
 
     return (
         <div className={`max-w-[90%] lg:max-w-[900px] mx-auto flex flex-col sm:flex-row border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
@@ -68,6 +88,7 @@ const LoginForm = () => {
                     <div className='flex flex-col sm:flex-row sm:space-x-5'>
                         
                         <button 
+                        onClick={handleGoogleLogin}
                         className='py-3 w-full mt-2 rounded-lg font-bold flex items-center justify-center space-x-2 disabled:cursor-pointer border border-purple-500'
                         >
                             <FcGoogle className='text-3xl' /> <span>Continue With Google</span>
