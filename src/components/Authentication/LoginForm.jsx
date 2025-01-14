@@ -6,14 +6,37 @@ import { useTheme } from '@/Provider/ThemeProvider';
 import { FaGithub } from "react-icons/fa";
 import useAuth from '@/Hooks/useAuth';
 import toast from 'react-hot-toast';
+import { useForm } from "react-hook-form"
+import { ImSpinner9 } from "react-icons/im";
 
 const LoginForm = () => {
 
     const {theme} = useTheme();
-    const {googleSignIn, signIn, setLoading} = useAuth();
+    const {googleSignIn, signIn, setLoading, loading} = useAuth();
     const navigate = useNavigate;
     const location = useLocation();
     const from = location.state || '/';
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+    const onSubmit = async (data) => {
+        const {email, password} = data;
+        
+        try {
+            await signIn(email, password);
+            toast.success('Login Successful!');
+            navigate(from);
+        } catch (error) {
+            toast.error('Login failed. Please try again', error)
+        }
+        finally{
+            setLoading(false)
+        }
+    }
 
     const handleGoogleLogin = async () => {
         try {
@@ -42,7 +65,7 @@ const LoginForm = () => {
 
                 <div className='sm:px-8'>
 
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
 
                         {/* email input */}
                         <div>
@@ -51,8 +74,20 @@ const LoginForm = () => {
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
                             type="email" 
                             placeholder='Enter Your Email' 
+                            {...register('email', {
+                                required : "Email is required",
+                                pattern : {
+                                    value : /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                                    message : 'Invalid Email Address'
+                                }
+                            })}
                             />
                         </div>
+                        
+                        {
+                            errors.email && 
+                            <p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>
+                        }
 
                         {/* password input */}
                         <div className='mt-3'>
@@ -61,10 +96,32 @@ const LoginForm = () => {
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
                             type="password" 
                             placeholder='Enter Your Password' 
+                            {...register('password', {
+                                required : "Password is required",
+                                minLength : {
+                                    value : 6,
+                                    message : "Password must be at least 6 characters"
+                                },
+                                pattern: {
+                                    value: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
+                                    message: "Password must include uppercase and lowercase letters",
+                                },
+                            })}
                             />
                         </div>
+                        
+                        {
+                            errors.password && 
+                            <p className='text-red-500 text-sm mt-1'>{errors.password.message}</p>
+                        }
 
-                        <button className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700`}>Login</button>
+                        <button 
+                        disabled={loading}
+                        type='submit'
+                        className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-purple-400`}
+                        >
+                            {loading ? <ImSpinner9 className='animate-spin mx-auto text-2xl text-white' /> : 'Register'}
+                        </button>
 
                     </form>
 
