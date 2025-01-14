@@ -3,40 +3,49 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import useAuth from "@/Hooks/useAuth"
+} from "@/components/ui/dropdown-menu";
+import useAuth from "@/Hooks/useAuth";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router";
 
 export function DropdownMenuDemo() {
+    const { user, logOut, setLoading } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state || "/";
 
-    const {user} = useAuth();
+    const handleLogOut = async () => {
+        try {
+            await logOut();
+            toast.success("Log out successful");
+            navigate(from);
+        } catch (error) {
+            toast.error(`Log out failed. Please try again. ${error}`);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-            <button className="h-10 w-10 rounded-full">
-                <img className="h-10 w-10 rounded-full" src={user?.photoURL} alt="" />
-            </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-
-            <DropdownMenuItem>
-                <button className="mx-auto text-lg">
-                    Dashboard
+            <DropdownMenuTrigger asChild>
+                <button className="h-12 w-12 flex flex-col items-center">
+                    <img className="h-10 w-10 rounded-full" src={user?.photoURL} alt="User Avatar" />
                 </button>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem>
-                <button className="mx-auto text-lg">
-                    My Profile
-                </button>
-            </DropdownMenuItem>
-        
-            <DropdownMenuItem>
-                <button className="mx-auto text-lg">
-                    Log out
-                </button>
-            </DropdownMenuItem>
-        </DropdownMenuContent>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+                <DropdownMenuItem>
+                    <button className="mx-auto text-lg">Dashboard</button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <button className="mx-auto text-lg">My Profile</button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <button onClick={handleLogOut} className="mx-auto text-lg">
+                        Log out
+                    </button>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

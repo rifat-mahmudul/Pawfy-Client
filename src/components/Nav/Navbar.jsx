@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import NavItem from './NavItem'
 import { ModeToggle } from '@/Provider/ModeToggle'
 import { RiMenu3Fill } from "react-icons/ri";
@@ -7,32 +7,13 @@ import { useState } from 'react';
 import { useTheme } from '@/Provider/ThemeProvider';
 import Logo from '../shared/Logo';
 import useAuth from '@/Hooks/useAuth';
-import toast from 'react-hot-toast';
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { DropdownMenuDemo } from './DropdownMenuDemo';
 
 const Navbar = () => {
 
     const { theme } = useTheme();
     const [open, setIsOpen] = useState(false);
-    const {user, logOut, setLoading} = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state || '/';
-
-    const handleLogOut = async () => {
-        try {
-            await logOut();
-            toast.success('log out succesful');
-            navigate(from);
-        } 
-        catch (error) {
-            toast.error(`log out failed. Please try again. ${error}`)
-        }
-        finally{
-            setLoading(false);
-        }
-    }
+    const {user} = useAuth();
 
     const navItems = <>
         <NavItem setIsOpen={setIsOpen} navTitle={'Home'} address={'/'}></NavItem>
