@@ -10,7 +10,7 @@ const RegisterForm = () => {
     const {theme} = useTheme();
 
     return (
-        <div className={`max-w-[90%] lg:max-w-[920px] mx-auto flex flex-col sm:flex-row items-center border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
+        <div className={`max-w-[90%] lg:max-w-[920px] mx-auto flex flex-col sm:flex-row sm:items-center border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
         
             <div className='sm:w-[40%]'>
                 <img className='h-[400px] ' src={loginImg} alt="" />
