@@ -4,7 +4,7 @@ import propTypes from 'prop-types'
 const HelmetTitle = ({title}) => {
     return (
         <Helmet>
-            <title>{title} | Project Name</title>
+            <title>{title} | Pawfy</title>
         </Helmet>
     )
 }

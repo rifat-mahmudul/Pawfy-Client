@@ -5,8 +5,7 @@ const Home = () => {
         <div>
 
             <HelmetTitle title={'Home'}></HelmetTitle>
-
-            <h1>This is Home Page....</h1>
+            <h1>This is Home Page</h1>
         </div>
     )
 }
