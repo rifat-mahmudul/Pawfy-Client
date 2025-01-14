@@ -1,12 +1,15 @@
+import Banner from "@/components/Home/Banner"
 import HelmetTitle from "../../../Shared/HelmetTitle"
 
 const Home = () => {
     return (
-        <div>
+        <section>
 
             <HelmetTitle title={'Home'}></HelmetTitle>
-            <h1>This is Home Page</h1>
-        </div>
+            
+            <Banner></Banner>
+
+        </section>
     )
 }
 

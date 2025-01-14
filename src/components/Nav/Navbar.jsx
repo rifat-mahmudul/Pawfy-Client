@@ -31,7 +31,7 @@ const Navbar = () => {
     </>
 
     return (
-        <header className='border border-purple-800 '>
+        <header className='fixed w-full top-0 z-50 backdrop-blur-lg '>
             
             <div className='max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
 
