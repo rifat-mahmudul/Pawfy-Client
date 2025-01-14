@@ -1,9 +1,14 @@
+import LoginForm from "@/components/Authentication/LoginForm"
+import HelmetTitle from "@/Shared/HelmetTitle"
 
 const Login = () => {
     return (
-        <div>
-            <h1>This is Log in Page...</h1>
-        </div>
+        <section className="py-24">
+
+            <HelmetTitle title="Login"></HelmetTitle>
+            <LoginForm></LoginForm>
+
+        </section>
     )
 }
 

@@ -1,11 +1,11 @@
 import { Link } from 'react-router'
-import logo from '../../assets/logo.png'
 import NavItem from './NavItem'
 import { ModeToggle } from '@/Provider/ModeToggle'
 import { RiMenu3Fill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { useState } from 'react';
 import { useTheme } from '@/Provider/ThemeProvider';
+import Logo from '../shared/Logo';
 
 const Navbar = () => {
 
@@ -36,12 +36,7 @@ const Navbar = () => {
             <div className='max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
 
                 <div>
-                    <Link to={'/'}>
-                        <div className='flex items-center gap-1'>
-                            <img className='h-14' src={logo} alt="" />
-                            <h1 className='text-3xl font-russo text-purple-700'>Pawfy</h1>
-                        </div>
-                    </Link>
+                    <Logo></Logo>
                 </div>
 
                 <div className='hidden lg:block'>
