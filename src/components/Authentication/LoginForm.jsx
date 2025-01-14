@@ -10,7 +10,7 @@ const LoginForm = () => {
     const {theme} = useTheme();
 
     return (
-        <div className={`max-w-[90%] lg:max-w-[900px] mx-auto flex border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} py-8 pl-8 rounded-lg`}>
+        <div className={`max-w-[90%] lg:max-w-[900px] mx-auto flex flex-col sm:flex-row border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
         
             <div className='sm:w-[40%]'>
                 <img className='h-[400px] ' src={loginImg} alt="" />
@@ -20,7 +20,7 @@ const LoginForm = () => {
 
                 <h1 className='text-center text-3xl font-russo mb-3'>Login</h1>
 
-                <div className='px-8'>
+                <div className='sm:px-8'>
 
                     <form>
 
@@ -52,7 +52,7 @@ const LoginForm = () => {
                         <span>Do not have an account?</span>
                         <span className='text-blue-500'>
                             <Link className='flex items-center space-x-1' to='/signUp'>
-                            <span>Sign Up here!</span> <LuSquareArrowOutUpRight />
+                            <span>Register here!</span> <LuSquareArrowOutUpRight />
                         </Link>
                         </span>
                     </p>
@@ -65,7 +65,7 @@ const LoginForm = () => {
                         <div className='border border-gray-300 w-full'></div>
                     </div>
 
-                    <div className='flex space-x-5'>
+                    <div className='flex flex-col sm:flex-row sm:space-x-5'>
                         
                         <button 
                         className='py-3 w-full mt-2 rounded-lg font-bold flex items-center justify-center space-x-2 disabled:cursor-pointer border border-purple-500'
