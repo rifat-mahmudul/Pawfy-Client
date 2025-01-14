@@ -10,6 +10,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ThemeProvider } from './Provider/ThemeProvider';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
           <AuthProvider>
             <BrowserRouter>
               <AppRoutes></AppRoutes>
+              <Toaster />
             </BrowserRouter>
           </AuthProvider>
         </ThemeProvider>

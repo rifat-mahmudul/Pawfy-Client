@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import loginImg from '../../assets/login-pets.webp'
 import { LuSquareArrowOutUpRight } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
@@ -6,10 +6,15 @@ import { useTheme } from '@/Provider/ThemeProvider';
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form"
 import { imageUpload } from '@/lib/utils';
+import useAuth from '@/Hooks/useAuth';
+import toast from 'react-hot-toast'
+import { ImSpinner9 } from "react-icons/im";
 
 const RegisterForm = () => {
 
     const {theme} = useTheme();
+    const {createUser, googleSignIn, profileUpdate, logOut, loading} = useAuth();
+    const navigate = useNavigate();
 
     const {
         register,
@@ -18,8 +23,18 @@ const RegisterForm = () => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        const {image} = data;
-        const photoURL = await imageUpload(image)
+        const {name, image, email, password} = data;
+        const photoURL = await imageUpload(image);
+
+        try {
+            await createUser(email, password);
+            await profileUpdate(name, photoURL);
+            await logOut();
+            toast.success('Registered Successful');
+            navigate('/login');
+        } catch (error) {
+            toast.error('Sign Up failed. Please try again', error)
+        }
     }
 
     return (
@@ -135,8 +150,11 @@ const RegisterForm = () => {
                         }
 
                         <button 
+                        disabled={loading}
                         type='submit'
-                        className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700`}>Register</button>
+                        className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-purple-400`}>
+                            {loading ? <ImSpinner9 className='animate-spin mx-auto text-2xl text-white' /> : 'Register'}
+                        </button>
 
                     </form>
 
