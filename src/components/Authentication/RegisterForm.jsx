@@ -5,12 +5,12 @@ import { FcGoogle } from "react-icons/fc";
 import { useTheme } from '@/Provider/ThemeProvider';
 import { FaGithub } from "react-icons/fa";
 
-const LoginForm = () => {
+const RegisterForm = () => {
 
     const {theme} = useTheme();
 
     return (
-        <div className={`max-w-[90%] lg:max-w-[900px] mx-auto flex flex-col sm:flex-row border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
+        <div className={`max-w-[90%] lg:max-w-[920px] mx-auto flex flex-col sm:flex-row items-center border border-purple-500 shadow-xl ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-900'} sm:py-8 sm:pl-8 rounded-lg p-2 sm:p-0`}>
         
             <div className='sm:w-[40%]'>
                 <img className='h-[400px] ' src={loginImg} alt="" />
@@ -18,14 +18,49 @@ const LoginForm = () => {
 
             <div className='sm:w-[60%]'>
 
-                <h1 className='text-center text-3xl font-russo mb-3'>Login</h1>
+                <h1 className='text-center text-3xl font-russo mb-3'>Register</h1>
 
                 <div className='sm:px-8'>
 
                     <form>
 
-                        {/* email input */}
+                        {/* name input */}
                         <div>
+                            <h1 className='font-semibold mb-2'>Name</h1>
+                            <input 
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
+                            type="text" 
+                            placeholder='Enter Your Name' 
+                            />
+                        </div>
+
+                        {/* Image input */}
+                        <div className='mt-3'>
+                            <h1 className='font-semibold mb-2'>Upload Photo</h1>
+
+                            <div className=' w-full  m-auto rounded-lg'>
+                                <div className='file_upload px-5 py-3 relative border-2 border-dotted border-purple-500 rounded-lg'>
+                                <div className='flex flex-col w-max mx-auto text-center'>
+                                    <label>
+                                    <input
+                                        className='text-sm cursor-pointer w-full hidden'
+                                        type='file'
+                                        name='image'
+                                        id='image'
+                                        accept='image/*'
+                                        hidden
+                                    />
+                                    <div className='bg-purple-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500'>
+                                        Upload
+                                    </div>
+                                    </label>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* email input */}
+                        <div className='mt-3'>
                             <h1 className='font-semibold mb-2'>Email</h1>
                             <input 
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
@@ -51,8 +86,8 @@ const LoginForm = () => {
                     <p className='text-sm mt-4 sm:flex justify-center space-x-2'>
                         <span>Do not have an account?</span>
                         <span className='text-blue-500'>
-                            <Link className='flex items-center space-x-1' to='/register'>
-                            <span>Register here!</span> <LuSquareArrowOutUpRight />
+                            <Link className='flex items-center space-x-1' to='/login'>
+                            <span>login!</span> <LuSquareArrowOutUpRight />
                         </Link>
                         </span>
                     </p>
@@ -88,4 +123,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default RegisterForm

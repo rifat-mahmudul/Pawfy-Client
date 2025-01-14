@@ -4,6 +4,7 @@ import Home from "../Pages/Main/Home/Home";
 import Login from "../Pages/Main/Authentication/Login";
 import PetListing from "../Pages/Main/PetListing";
 import DonationCampaign from "../Pages/DonationCampaign";
+import Register from "@/Pages/Main/Authentication/Register";
 
 
 const AppRoutes = () => {
@@ -15,6 +16,7 @@ const AppRoutes = () => {
                 {/* all nested routes here */}
                 <Route path="/" element={<Home></Home>}></Route>
                 <Route path="/login" element={<Login></Login>}></Route>
+                <Route path="/register" element={<Register></Register>}></Route>
                 <Route path="pet-listing" element={<PetListing></PetListing>}></Route>
                 <Route path="donation-campaign" element={<DonationCampaign></DonationCampaign>}></Route>
 
