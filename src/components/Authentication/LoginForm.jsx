@@ -12,10 +12,11 @@ import { ImSpinner9 } from "react-icons/im";
 const LoginForm = () => {
 
     const {theme} = useTheme();
-    const {googleSignIn, signIn, setLoading, loading} = useAuth();
+    const {googleSignIn, signIn, loading} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state || '/';
+    const {saveUser} = useAuth();
 
     const {
         register,
@@ -33,23 +34,18 @@ const LoginForm = () => {
         } catch (error) {
             toast.error('Login failed. Please try again', error);
         }
-        finally{
-            setLoading(false)
-        }
     }
 
     const handleGoogleLogin = async () => {
         try {
-            await googleSignIn();
+            const data = await googleSignIn();
+            saveUser(data.user);
             toast.success('Login Successful!');
             navigate(from);
         } 
         catch (error) {
             toast.error('Login failed. Please try again', error);
             console.log(error)
-        }
-        finally{
-            setLoading(false);
         }
     }
 
@@ -121,7 +117,7 @@ const LoginForm = () => {
                         type='submit'
                         className={`py-3 w-full bg-purple-500 mt-4 rounded-lg text-white font-bold text-lg transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-purple-400`}
                         >
-                            {loading ? <ImSpinner9 className='animate-spin mx-auto text-2xl text-white' /> : 'Register'}
+                            {loading ? <ImSpinner9 className='animate-spin mx-auto text-2xl text-white' /> : 'Login'}
                         </button>
 
                     </form>

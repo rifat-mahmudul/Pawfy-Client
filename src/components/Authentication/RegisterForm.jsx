@@ -13,10 +13,11 @@ import { ImSpinner9 } from "react-icons/im";
 const RegisterForm = () => {
 
     const {theme} = useTheme();
-    const {createUser, googleSignIn, profileUpdate, logOut, loading, setLoading} = useAuth();
+    const {createUser, googleSignIn, profileUpdate, logOut, loading} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state || '/';
+    const {saveUser} = useAuth();
 
     const {
         register,
@@ -31,6 +32,15 @@ const RegisterForm = () => {
         try {
             await createUser(email, password);
             await profileUpdate(name, photoURL);
+
+            const user = {
+                displayName: name,
+                photoURL,
+                email,
+            };
+
+            await saveUser(user);
+
             await logOut();
             toast.success('Registered Successful!');
             navigate('/login');
@@ -38,22 +48,17 @@ const RegisterForm = () => {
         catch (error) {
             toast.error('Registered failed. Please try again', error)
         }
-        finally{
-            setLoading(false)
-        }
     }
 
     const handleGoogleLogin = async () => {
         try {
-            await googleSignIn();
+            const data = await googleSignIn();
+            saveUser(data.user);
             toast.success('Registered Successful!');
             navigate(from);
         } 
         catch (error) {
             toast.error('Registered failed. Please try again', error)
-        }
-        finally{
-            setLoading(false)
         }
     }
 

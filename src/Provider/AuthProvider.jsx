@@ -41,14 +41,28 @@ const AuthProvider = ({children}) => {
     }
 
     //log out user
-    const logOut = () => {
+    const logOut = async () => {
         setLoading(true);
+        await axiosPublic('/logout', {withCredentials : true})
         return signOut(auth);
     }
 
+    //get token
     const getToken = async email => {
         const {data} = await axiosPublic.post('/jwt', {email}, {withCredentials : true});
-        console.log(data);
+        return data;
+    }
+
+    //save user info
+    const saveUser = async user => {
+        const userInfo = {
+            name : user?.displayName,
+            image : user?.photoURL,
+            email : user?.email,
+            role : 'user'
+        }
+
+        const {data} = await axiosPublic.post('/users', userInfo);
         return data;
     }
 
@@ -57,7 +71,7 @@ const AuthProvider = ({children}) => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             if(currentUser){
-                getToken(currentUser?.email)
+                getToken(currentUser?.email);
             }
             setLoading(false);
         });
@@ -73,6 +87,7 @@ const AuthProvider = ({children}) => {
         signIn,
         profileUpdate,
         logOut,
+        saveUser
     }
 
     return (
