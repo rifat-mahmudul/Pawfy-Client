@@ -33,15 +33,15 @@ const AppRoutes = () => {
 
                 {/* dashboard layout */}
                 <Route path="/dashboard" element={<Dashboard></Dashboard>}>
-                    <Route path="add-pet" element={<AddPet></AddPet>}></Route>
-                    <Route path="my-added-pets" element={<MyAddPets></MyAddPets>}></Route>
-                    <Route path="adoption-request" element={<AdoptionRequest></AdoptionRequest>}></Route>
-                    <Route path="add-donation-campaign" element={<AddDonationCampaign></AddDonationCampaign>}></Route>
-                    <Route path="my-donation-campaign" element={<MyDonationCampaigns></MyDonationCampaigns>}></Route>
-                    <Route path="my-donations" element={<MyDonations></MyDonations>}></Route>
-                    <Route path="users" element={<AllUser></AllUser>}></Route>
-                    <Route path="all-pets" element={<AllPets></AllPets>}></Route>
-                    <Route path="all-donations" element={<AllDonations></AllDonations>}></Route>
+                    <Route path="/dashboard/add-pet" element={<AddPet></AddPet>}></Route>
+                    <Route path="/dashboard/my-added-pets" element={<MyAddPets></MyAddPets>}></Route>
+                    <Route path="/dashboard/adoption-request" element={<AdoptionRequest></AdoptionRequest>}></Route>
+                    <Route path="/dashboard/add-donation-campaign" element={<AddDonationCampaign></AddDonationCampaign>}></Route>
+                    <Route path="/dashboard/my-donation-campaign" element={<MyDonationCampaigns></MyDonationCampaigns>}></Route>
+                    <Route path="/dashboard/my-donations" element={<MyDonations></MyDonations>}></Route>
+                    <Route path="/dashboard/users" element={<AllUser></AllUser>}></Route>
+                    <Route path="/dashboard/all-pets" element={<AllPets></AllPets>}></Route>
+                    <Route path="/dashboard/all-donations" element={<AllDonations></AllDonations>}></Route>
                 </Route>
 
             </Route>

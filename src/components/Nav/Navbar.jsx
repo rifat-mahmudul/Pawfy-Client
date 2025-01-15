@@ -8,12 +8,15 @@ import { useTheme } from '@/Provider/ThemeProvider';
 import Logo from '../shared/Logo';
 import useAuth from '@/Hooks/useAuth';
 import { DropdownMenuDemo } from './DropdownMenuDemo';
+import useDashNav from '../Dashboard/DashNav/useDashNav';
 
 const Navbar = () => {
 
     const { theme } = useTheme();
     const [open, setIsOpen] = useState(false);
     const {user} = useAuth();
+
+    const [dasNavItems, dashNavOpen, setDashNavOpen] = useDashNav();
 
     const navItems = <>
         <NavItem setIsOpen={setIsOpen} navTitle={'Home'} address={'/'}></NavItem>
@@ -40,14 +43,25 @@ const Navbar = () => {
     </>
 
     return (
-        <header className='fixed w-full top-0 z-50 backdrop-blur-lg border border-red-500'>
+        <header className='fixed w-full top-0 z-50 backdrop-blur-lg'>
             
             <div className='max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
 
                 <div className='lg:hidden'>
                     {
                         user ?
-                        <DropdownMenuDemo></DropdownMenuDemo>
+                        <div className='flex items-center space-x-2'>
+                            <DropdownMenuDemo></DropdownMenuDemo>
+                            <div className='lg:hidden flex items-center space-x-3'>
+                                <button className='text-3xl font-bold' onClick={() => setDashNavOpen(!dashNavOpen)}>
+                                    { dashNavOpen ?
+                                        <RxCross2 />
+                                        :
+                                        <RiMenu3Fill/>
+                                    }
+                                </button>
+                            </div>
+                        </div>
                         :
                         <div>
                             <Logo></Logo>
@@ -88,6 +102,18 @@ const Navbar = () => {
                             <nav>
                                 <ul className='flex flex-col text-center space-y-4 font-semibold text-gray-600'>
                                 {navItems}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                }
+
+                { dashNavOpen && 
+                    <div className={`lg:hidden absolute top-16 left-1 bg-white shadow-xl p-4 rounded-lg w-[3/4]  ease-in-out duration-1000 border border-gray-400 overflow-auto`}>
+                        <div>
+                            <nav>
+                                <ul className='flex flex-col text-center space-y-4 font-semibold text-gray-600'>
+                                {dasNavItems}
                                 </ul>
                             </nav>
                         </div>
