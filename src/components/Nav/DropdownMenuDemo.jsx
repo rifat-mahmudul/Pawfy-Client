@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useAuth from "@/Hooks/useAuth";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 export function DropdownMenuDemo() {
     const { user, logOut, setLoading } = useAuth();
@@ -34,9 +34,11 @@ export function DropdownMenuDemo() {
                 </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-                <DropdownMenuItem>
-                    <button className="mx-auto text-lg">Dashboard</button>
-                </DropdownMenuItem>
+                <Link to={'/dashboard'}>
+                    <DropdownMenuItem>
+                        <button className="mx-auto text-lg">Dashboard</button>
+                    </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                     <button className="mx-auto text-lg">My Profile</button>
                 </DropdownMenuItem>

@@ -9,7 +9,7 @@ const NavItem = ({navTitle, address, setIsOpen}) => {
     return (
         <NavLink
         onClick={()=>setIsOpen(false)}
-        className={({isActive}) => (isActive ? `font-bold text-purple-700  ${theme === 'light' ? 'text-black' : 'text-white'}` : `hover:text-purple-700 font-semibold ${theme === 'light' ? 'text-black' : 'text-white'}`)}
+        className={({isActive}) => (isActive ? `font-bold text-purple-700` : `hover:text-purple-700 font-semibold ${theme === 'light' ? 'text-black' : 'text-white'}`)}
         to={address}
         >
             <h3>{navTitle}</h3>

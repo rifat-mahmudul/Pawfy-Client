@@ -40,7 +40,7 @@ const Navbar = () => {
     </>
 
     return (
-        <header className='fixed w-full top-0 z-50 backdrop-blur-lg '>
+        <header className='fixed w-full top-0 z-50 backdrop-blur-lg border border-red-500'>
             
             <div className='max-w-[90%] xl:max-w-[1200px] mx-auto py-2 flex justify-between items-center'>
 
@@ -49,7 +49,7 @@ const Navbar = () => {
                         user ?
                         <DropdownMenuDemo></DropdownMenuDemo>
                         :
-                        <div className='hidden lg:block'>
+                        <div>
                             <Logo></Logo>
                         </div>
                     }

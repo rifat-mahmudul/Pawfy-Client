@@ -29,6 +29,7 @@ const LoginForm = () => {
         try {
             await signIn(email, password);
             toast.success('Login Successful!');
+            navigate(from);
         } catch (error) {
             toast.error('Login failed. Please try again', error);
         }
