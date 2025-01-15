@@ -1,5 +1,5 @@
 import { NavLink } from "react-router"
-import propTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { useTheme } from "@/Provider/ThemeProvider";
 
 const NavItem = ({navTitle, address, setIsOpen}) => {
@@ -18,9 +18,9 @@ const NavItem = ({navTitle, address, setIsOpen}) => {
 }
 
 NavItem.propTypes = {
-    navTitle : propTypes.string,
-    address : propTypes.string,
-    setIsOpen : propTypes.func,
+    navTitle : PropTypes.string,
+    address : PropTypes.string,
+    setIsOpen : PropTypes.func,
 }
 
 export default NavItem

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router"
-import propTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { useTheme } from "@/Provider/ThemeProvider";
 
 const DashNavItem = ({navTitle, address, icon, setDashNavOpen}) => {
@@ -19,10 +19,10 @@ const DashNavItem = ({navTitle, address, icon, setDashNavOpen}) => {
 }
 
 DashNavItem.propTypes = {
-    navTitle : propTypes.string,
-    address : propTypes.string,
-    setDashNavOpen : propTypes.func,
-    icon : propTypes.element,
+    navTitle : PropTypes.string,
+    address : PropTypes.string,
+    setDashNavOpen : PropTypes.func,
+    icon : PropTypes.element,
 }
 
 export default DashNavItem
