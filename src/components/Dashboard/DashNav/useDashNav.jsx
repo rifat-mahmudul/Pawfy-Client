@@ -21,7 +21,7 @@ const useDashNav = () => {
             <DashNavItem 
             setDashNavOpen={setDashNavOpen} 
             navTitle="Users" 
-            address="/dashboard/users" 
+            address="users" 
             icon={<FaUsers />}
             >
             </DashNavItem>

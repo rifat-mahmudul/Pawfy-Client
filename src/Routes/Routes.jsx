@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import Main from "../Layout/Main";
 import Home from "../Pages/Main/Home/Home";
 import Login from "../Pages/Main/Authentication/Login";
@@ -16,9 +16,10 @@ import AllUser from "@/Pages/Dashboard/AllUser";
 import AllPets from "@/Pages/Dashboard/AllPets";
 import AllDonations from "@/Pages/Dashboard/AllDonations";
 import PrivateRoute from "./PrivateRoute";
-
+import AdminRoute from "./AdminRoute";
 
 const AppRoutes = () => {
+
     return (
         <Routes>
             
@@ -34,15 +35,22 @@ const AppRoutes = () => {
 
                 {/* dashboard layout */}
                 <Route path="/dashboard" element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}>
+
+                    <Route index element={<Navigate to="users" replace />} />
+
+                    {/* admin route only */}
+                    <Route path="users" element={<PrivateRoute><AdminRoute><AllUser></AllUser></AdminRoute></PrivateRoute>}></Route>
+                    <Route path="/dashboard/all-pets" element={<PrivateRoute><AdminRoute><AllPets></AllPets></AdminRoute></PrivateRoute>}></Route>
+                    <Route path="/dashboard/all-donations" element={<PrivateRoute><AdminRoute><AllDonations></AllDonations></AdminRoute></PrivateRoute>}></Route>
+
+                    {/* user's route only */}
                     <Route path="/dashboard/add-pet" element={<PrivateRoute><AddPet></AddPet></PrivateRoute>}></Route>
                     <Route path="/dashboard/my-added-pets" element={<PrivateRoute><MyAddPets></MyAddPets></PrivateRoute>}></Route>
                     <Route path="/dashboard/adoption-request" element={<PrivateRoute><AdoptionRequest></AdoptionRequest></PrivateRoute>}></Route>
                     <Route path="/dashboard/add-donation-campaign" element={<PrivateRoute><AddDonationCampaign></AddDonationCampaign></PrivateRoute>}></Route>
                     <Route path="/dashboard/my-donation-campaign" element={<MyDonationCampaigns></MyDonationCampaigns>}></Route>
                     <Route path="/dashboard/my-donations" element={<PrivateRoute><MyDonations></MyDonations></PrivateRoute>}></Route>
-                    <Route path="/dashboard/users" element={<PrivateRoute><AllUser></AllUser></PrivateRoute>}></Route>
-                    <Route path="/dashboard/all-pets" element={<PrivateRoute><AllPets></AllPets></PrivateRoute>}></Route>
-                    <Route path="/dashboard/all-donations" element={<PrivateRoute><AllDonations></AllDonations></PrivateRoute>}></Route>
+
                 </Route>
 
             </Route>
