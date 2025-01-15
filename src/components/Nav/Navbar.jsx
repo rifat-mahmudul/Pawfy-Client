@@ -109,15 +109,10 @@ const Navbar = () => {
                 }
 
                 { dashNavOpen && 
-                    <div className={`lg:hidden absolute top-16 left-1 bg-white shadow-xl p-4 rounded-lg w-[3/4]  ease-in-out duration-1000 border border-gray-400 overflow-auto`}>
-                        <div>
-                            <nav>
-                                <ul className='flex flex-col text-center space-y-4 font-semibold text-gray-600'>
-                                {dasNavItems}
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    <div 
+                    className={`lg:hidden absolute top-16 left-1 bg-white shadow-xl p-4 rounded-lg h-[70vh] ease-in-out duration-1000 border border-gray-400 overflow-y-auto`}>
+                    {dasNavItems}
+                </div>
                 }
 
             </div>
