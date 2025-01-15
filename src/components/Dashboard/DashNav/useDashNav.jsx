@@ -27,7 +27,7 @@ const useDashNav = () => {
     const dasNavItems = navData.map((item, index) => (
         <DashNavItem
             key={index}
-            setIsOpen={setDashNavOpen}
+            setDashNavOpen={setDashNavOpen}
             navTitle={item.title}
             address={item.address}
             icon={item.icon}
