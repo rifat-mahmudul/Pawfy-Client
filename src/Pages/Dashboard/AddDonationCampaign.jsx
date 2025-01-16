@@ -38,8 +38,8 @@ const AddDonationCampaign = () => {
     const navigate = useNavigate();
 
     const {mutateAsync} = useMutation({
-        mutationFn : async petData => {
-            const {data} = await axiosSecure.post('/pets', petData);
+        mutationFn : async donateData => {
+            const {data} = await axiosSecure.post('/donation', donateData);
             return data;
         }
     })
@@ -62,11 +62,11 @@ const AddDonationCampaign = () => {
         
         try {
             await mutateAsync(data);
-            toast.success('Pet added successfully!');
-            navigate('/dashboard/my-added-pets')
+            toast.success('Donation create successfully!');
+            navigate('/dashboard/my-donation-campaign')
         } catch (error) {
-            console.log('error from post pets',error);
-            toast.error('Post failed. Please try again!')
+            console.log('error from create donation',error);
+            toast.error('Donation create failed. Please try again!')
         }
         setLoading(false)
     }
@@ -74,7 +74,7 @@ const AddDonationCampaign = () => {
 
     return (
         <section className="pb-16">
-            <HelmetTitle title="Add A Pet"></HelmetTitle>
+            <HelmetTitle title="Create Donation Campaign"></HelmetTitle>
             
             <div>
 
@@ -99,7 +99,7 @@ const AddDonationCampaign = () => {
                                         })}
                                     />
                                     <div className='bg-purple-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-purple-700'>
-                                    {watchedImage ? `${watchedImage[0].name.slice(0, 10)}...${watchedImage[0].type}` : "Upload"}
+                                    {watchedImage && watchedImage[0] ? `${watchedImage[0].name.slice(0, 10)}...${watchedImage[0].type}` : "Upload"}
                                     </div>
                                     </label>
                                 </div>
@@ -118,7 +118,7 @@ const AddDonationCampaign = () => {
                             <h1 className='font-semibold mb-2'>Maximum Donation</h1>
                             <input 
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
-                            type="text" 
+                            type="number" 
                             placeholder='Enter maximum donation'
                             {...register('maximumDonation', {
                                 required : "Maximum donation is required"

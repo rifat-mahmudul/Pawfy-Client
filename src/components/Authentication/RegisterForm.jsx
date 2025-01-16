@@ -116,7 +116,7 @@ const RegisterForm = () => {
                                         })}
                                     />
                                     <div className='bg-purple-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-purple-700'>
-                                    {watchedImage ? `${watchedImage[0].name.slice(0, 10)}...${watchedImage[0].type}` : "Upload"}
+                                    {watchedImage && watchedImage[0] ? `${watchedImage[0].name.slice(0, 10)}...${watchedImage[0].type}` : "Upload"}
                                     </div>
                                     </label>
                                 </div>
