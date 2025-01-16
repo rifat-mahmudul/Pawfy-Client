@@ -141,6 +141,7 @@ const AddDonationCampaign = () => {
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
                             selected={startDate} 
                             onChange={(date) => setStartDate(date)} 
+                            wrapperClassName="w-full"
                             />
                         </div>
 
