@@ -8,6 +8,10 @@ import { useForm } from "react-hook-form"
 import { imageUpload } from "@/lib/utils";
 import { ImSpinner9 } from "react-icons/im";
 import { htmlToText } from 'html-to-text';
+import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 const AddPet = () => {
 
@@ -38,6 +42,15 @@ const AddPet = () => {
     } = useForm()
 
     const watchedImage = watch('image');
+    const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
+
+    const {mutateAsync} = useMutation({
+        mutationFn : async petData => {
+            const {data} = await axiosSecure.post('/pets', petData);
+            return data;
+        }
+    })
 
     const onSubmit = async data => {
 
@@ -54,7 +67,14 @@ const AddPet = () => {
         data.date = date;
         data.time = time;
         
-        console.log(data)
+        try {
+            await mutateAsync(data);
+            toast.success('Pet added successfully!');
+            navigate('/dashboard/my-added-pets')
+        } catch (error) {
+            console.log('error from post pets',error);
+            toast.error('Post failed. Please try again!')
+        }
         setLoading(false)
     }
 
