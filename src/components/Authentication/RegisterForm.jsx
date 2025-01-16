@@ -31,7 +31,7 @@ const RegisterForm = () => {
 
         try {
             await createUser(email, password);
-            await profileUpdate(name, photoURL);
+            await profileUpdate(name, photoURL.data.display_url);
 
             const user = {
                 displayName: name,
