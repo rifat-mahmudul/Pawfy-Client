@@ -48,6 +48,12 @@ const MyAddPets = () => {
         });
     }
 
+    const handleAdopt = (id) => {
+        axiosSecure.patch(`/pets/adopt/${id}`, { adopted: true }).then(() => {
+            refetch();
+        });
+    };
+
     const columnHelper = createColumnHelper();
 
     const columns = [
@@ -74,7 +80,7 @@ const MyAddPets = () => {
             header : () => (<p className="text-center">Status</p>),
             cell : (info) => 
                 (info.getValue() ?
-                    <p className="bg-purple-300 text-center py-2 rounded-lg text-purple-900 font-bold">Adopted</p> : 
+                    <p className="bg-green-200 text-center py-2 rounded-lg text-green-800 font-bold">Adopted</p> : 
                     <p className="bg-purple-300 text-center py-2 rounded-lg text-purple-900 font-bold">Not Adopted</p>
                 )
         }),
@@ -102,9 +108,10 @@ const MyAddPets = () => {
                         </div>
                     </button>
                     <button
-                        className="p-2 bg-green-500 text-white rounded font-bold"
+                        onClick={() => handleAdopt(row.original._id)}
+                        className={`p-2 text-white rounded font-bold ${row.original.adopted ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'}`}
                     >
-                        Adopt
+                        {row.original.adopted ? 'Adopted' : 'Adopt'}
                     </button>
                     
                 </div>
