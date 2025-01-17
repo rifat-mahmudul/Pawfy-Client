@@ -2,9 +2,11 @@ import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import HelmetTitle from "@/Shared/HelmetTitle";
 import { useQuery } from "@tanstack/react-query";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getSortedRowModel } from "@tanstack/react-table";
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getSortedRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import { FaPencil } from "react-icons/fa6";
 import { MdDeleteForever } from "react-icons/md";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 
 
 const MyAddPets = () => {
@@ -83,18 +85,19 @@ const MyAddPets = () => {
         data : pets,
         columns,
         getCoreRowModel : getCoreRowModel(),
-        getSortedRowModel : getSortedRowModel()
+        getSortedRowModel : getSortedRowModel(),
+        getPaginationRowModel : getPaginationRowModel()
     })
 
 
     return (
-        <section>
+        <section className="pb-16">
             <HelmetTitle title="My Added Pets"></HelmetTitle>
 
-            <div>
+            <div className="overflow-hidden">
 
-                <table className="border border-purple-500 w-full rounded-lg text-center">
-                    <thead className="text-center">
+                <table className="border border-purple-600 w-full rounded-lg text-center">
+                    <thead className="text-center bg-purple-600 py-10 text-white">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
@@ -136,6 +139,29 @@ const MyAddPets = () => {
                         }
                     </tbody>
                 </table>
+
+                <div className="flex justify-end space-x-5 items-center mt-4">
+                    <button 
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                    className="py-2 px-5 rounded-3xl bg-purple-600 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed">
+                        <h1 className="text-lg"><MdKeyboardDoubleArrowLeft /></h1>
+                        <h1>Previous</h1>
+                    </button>
+
+                    <span>
+                        page
+                    </span>
+
+                    <button 
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                    className="py-2 px-5 rounded-3xl bg-purple-500 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed"
+                    >
+                        <h1>Next</h1>
+                        <h1 className="text-lg"><MdKeyboardDoubleArrowRight /></h1>
+                    </button>
+                </div>
 
             </div>
 
