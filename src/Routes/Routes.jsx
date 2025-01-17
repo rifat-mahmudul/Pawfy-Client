@@ -17,6 +17,7 @@ import AllPets from "@/Pages/Dashboard/AllPets";
 import AllDonations from "@/Pages/Dashboard/AllDonations";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
+import UpdatePets from "@/Pages/Dashboard/UpdatePets";
 
 const AppRoutes = () => {
 
@@ -45,6 +46,7 @@ const AppRoutes = () => {
 
                     {/* user's route only */}
                     <Route path="/dashboard/add-pet" element={<PrivateRoute><AddPet></AddPet></PrivateRoute>}></Route>
+                    <Route path="/dashboard/update-pet/:id" element={<PrivateRoute><UpdatePets></UpdatePets></PrivateRoute>}></Route>
                     <Route path="/dashboard/my-added-pets" element={<PrivateRoute><MyAddPets></MyAddPets></PrivateRoute>}></Route>
                     <Route path="/dashboard/adoption-request" element={<PrivateRoute><AdoptionRequest></AdoptionRequest></PrivateRoute>}></Route>
                     <Route path="/dashboard/add-donation-campaign" element={<PrivateRoute><AddDonationCampaign></AddDonationCampaign></PrivateRoute>}></Route>

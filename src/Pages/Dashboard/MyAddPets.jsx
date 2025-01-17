@@ -8,12 +8,14 @@ import { FaPencil } from "react-icons/fa6";
 import { MdDeleteForever } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 
 const MyAddPets = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const { data: pets = [], refetch } = useQuery({
         queryKey: ["pets"],
@@ -82,6 +84,9 @@ const MyAddPets = () => {
             cell : ({row}) => (
                 <div className="flex gap-2 justify-around items-center">
                     <button
+                        onClick={() => {
+                            navigate(`/dashboard/update-pet/${row.original._id}`)
+                        }}
                         className="p-3 bg-[#0000ff64] text-white rounded"
                     >
                         <div className="text-lg text-[blue]">
