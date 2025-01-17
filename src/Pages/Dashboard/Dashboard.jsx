@@ -9,7 +9,7 @@ const Dashboard = () => {
                 <DashNav></DashNav>
             </div>
 
-            <div className="lg:w-[75%] w-[90%] min-h-screen mx-auto pt-24 sticky top-0">
+            <div className="lg:w-[77%] w-[90%] min-h-screen mx-auto pt-24 sticky top-0">
                 <Outlet></Outlet>
             </div>
 

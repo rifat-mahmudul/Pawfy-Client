@@ -3,23 +3,48 @@ import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import HelmetTitle from "@/Shared/HelmetTitle";
 import { useQuery } from "@tanstack/react-query";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getSortedRowModel, getPaginationRowModel } from "@tanstack/react-table";
+import toast from "react-hot-toast";
 import { FaPencil } from "react-icons/fa6";
 import { MdDeleteForever } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import Swal from "sweetalert2";
 
 
 const MyAddPets = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    const { data: pets = [] } = useQuery({
+    const { data: pets = [], refetch } = useQuery({
         queryKey: ["pets"],
         queryFn: async () => {
             const { data } = await axiosSecure(`/pets/${user?.email}`);
             return data;
         },
     });
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axiosSecure.delete(`/pet/${id}`)
+                    toast.success('Pet has been deleted')
+                } catch (error) {
+                    console.log(`error from delete pets : ${error}`)
+                } finally {
+                    refetch()
+                }
+            }
+        });
+    }
 
     const columnHelper = createColumnHelper();
 
@@ -54,7 +79,7 @@ const MyAddPets = () => {
         columnHelper.display({
             id: "actions",
             header: () => <p className="text-center">Actions</p>,
-            cell : () => (
+            cell : ({row}) => (
                 <div className="flex gap-2 justify-around items-center">
                     <button
                         className="p-3 bg-[#0000ff64] text-white rounded"
@@ -64,6 +89,7 @@ const MyAddPets = () => {
                         </div>
                     </button>
                     <button
+                        onClick={() => handleDelete(row.original._id)}
                         className="p-3 bg-[#ff00003f] text-white rounded"
                     >
                         <div className="text-xl text-[red]">
@@ -103,19 +129,24 @@ const MyAddPets = () => {
                             key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <th
-                                        key={header.id}
-                                        className="border border-gray-300 px-4 py-4 text-left cursor-pointer"
-                                        onClick={header.column.getToggleSortingHandler()}
-                                    >
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                        {{
-                                            asc: " 🔼",
-                                            desc: " 🔽",
-                                        }[header.column.getIsSorted()] || null}
-                                    </th>
+                                    key={header.id}
+                                    className={`border border-gray-300 px-4 py-4 text-left cursor-pointer ${
+                                        header.column.getIsSorted() ? "bg-purple-600 text-white" : ""
+                                    }`}
+                                    onClick={header.column.getToggleSortingHandler()}
+                                >
+                                    <div className="flex items-center justify-center">
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
+                                        <span className="ml-2">
+                                            {{
+                                                asc: <span className="text-blue-500 text-lg">🔼</span>,
+                                                desc: <span className="text-red-500 text-lg">🔽</span>,
+                                            }[header.column.getIsSorted()] || (
+                                                <span className="text-gray-400 text-lg">↕️</span>
+                                            )}
+                                        </span>
+                                    </div>
+                                </th>
                                 ))}
                             </tr>
                         ))}
