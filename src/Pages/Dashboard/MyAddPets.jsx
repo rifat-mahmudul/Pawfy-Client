@@ -94,16 +94,17 @@ const MyAddPets = () => {
         <section className="pb-16">
             <HelmetTitle title="My Added Pets"></HelmetTitle>
 
-            <div className="overflow-hidden">
+            <div className="lg:overflow-hidden overflow-x-auto rounded-lg">
 
-                <table className="border border-purple-600 w-full rounded-lg text-center">
-                    <thead className="text-center bg-purple-600 py-10 text-white">
+                <table className="w-full text-center bg-[#80008017] font-semibold">
+                    <thead className="text-center bg-purple-600 text-white">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <tr key={headerGroup.id}>
+                            <tr
+                            key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <th
                                         key={header.id}
-                                        className="border border-gray-300 px-4 py-2 text-left cursor-pointer"
+                                        className="border border-gray-300 px-4 py-4 text-left cursor-pointer"
                                         onClick={header.column.getToggleSortingHandler()}
                                     >
                                         {flexRender(
@@ -123,10 +124,12 @@ const MyAddPets = () => {
                     <tbody>
                         {
                             table.getRowModel().rows.map((row) => (
-                                <tr key={row.id}>
+                                <tr 
+                                className=" even:bg-[#80808023]"
+                                key={row.id}>
                                     {
                                         row.getVisibleCells().map((cell) => (
-                                            <td key={cell.id} className="border border-purple-300 px-4 py-2">
+                                            <td key={cell.id} className="border border-purple-500 px-4 py-2">
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
                                                     cell.getContext()
@@ -140,30 +143,32 @@ const MyAddPets = () => {
                     </tbody>
                 </table>
 
-                <div className="flex justify-end space-x-5 items-center mt-4">
+            </div>
+
+            {/* pagination */}
+            
+            <div className="flex justify-end space-x-5 items-center mt-4">
                     <button 
                     onClick={() => table.previousPage()}
                     disabled={!table.getCanPreviousPage()}
-                    className="py-2 px-5 rounded-3xl bg-purple-600 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed">
+                    className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-600 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed">
                         <h1 className="text-lg"><MdKeyboardDoubleArrowLeft /></h1>
                         <h1>Previous</h1>
                     </button>
 
-                    <span>
-                        page
+                    <span className="font-semibold">
+                        {table.getState().pagination.pageIndex + 1} / {" "} {table.getPageCount()}
                     </span>
 
                     <button 
                     onClick={() => table.nextPage()}
                     disabled={!table.getCanNextPage()}
-                    className="py-2 px-5 rounded-3xl bg-purple-500 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed"
+                    className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-500 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed"
                     >
                         <h1>Next</h1>
                         <h1 className="text-lg"><MdKeyboardDoubleArrowRight /></h1>
                     </button>
                 </div>
-
-            </div>
 
         </section>
     );
