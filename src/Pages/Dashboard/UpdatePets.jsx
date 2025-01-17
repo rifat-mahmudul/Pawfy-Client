@@ -63,7 +63,7 @@ const UpdatePet = () => {
         const location = form.elements.location.value;
         const sortDescription = form.elements.sortDescription.value;
         const category = selectedOption?.value;
-        const image = form.image.files[0];
+        const image = form.image.files;
         let imageUrl = image || pet.image;
 
         if (image && image !== pet.image) {
@@ -77,10 +77,8 @@ const UpdatePet = () => {
             sortDescription,
             category,
             longDescription: plainTextDescription,
-            image: imageUrl
+            image: imageUrl.data.display_url
         };
-
-        console.log(petData);
 
         try {
             await mutateAsync(petData);
