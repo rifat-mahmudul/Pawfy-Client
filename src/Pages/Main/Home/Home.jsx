@@ -6,6 +6,7 @@ import Faq from "@/components/Home/Faq"
 import CallToAction from "@/components/Home/CallToAction"
 import AboutUsSection from "@/components/Home/AboutUs/AboutUsSection"
 import SuccessStoriesSection from "@/components/Home/SuccessStory/SuccessStoriesSection"
+import Footer from "@/components/Home/Footer"
 
 const Home = () => {
     return (
@@ -22,6 +23,7 @@ const Home = () => {
             <AboutUsSection></AboutUsSection>
             <SuccessStoriesSection></SuccessStoriesSection>
             <Faq></Faq>
+            <Footer></Footer>
 
         </section>
     )

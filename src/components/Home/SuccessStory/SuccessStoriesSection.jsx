@@ -20,7 +20,7 @@ const stories = [
 ];
 
 const SuccessStoriesSection = () => (
-    <section className="pb-20">
+    <section id="success-stories" className="pb-20">
         <div className="xl:max-w-[1200px] max-w-[90%] mx-auto px-6">
         <SuccessStoriesHeader />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
