@@ -30,9 +30,9 @@ const AppRoutes = () => {
                 <Route path="/" element={<Home></Home>}></Route>
                 <Route path="/login" element={<Login></Login>}></Route>
                 <Route path="/register" element={<Register></Register>}></Route>
-                <Route path="pet-listing" element={<PetListing></PetListing>}></Route>
+                <Route path="/pet-listing" element={<PetListing></PetListing>}></Route>
                 <Route path="/pet-details/:id" element={<PetDetails></PetDetails>}></Route>
-                <Route path="donation-campaign" element={<DonationCampaign></DonationCampaign>}></Route>
+                <Route path="/donation-campaign" element={<DonationCampaign></DonationCampaign>}></Route>
 
 
                 {/* dashboard layout */}
