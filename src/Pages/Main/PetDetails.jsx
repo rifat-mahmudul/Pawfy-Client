@@ -4,12 +4,13 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import HelmetTitle from "@/Shared/HelmetTitle"
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 
 const PetDetails = () => {
 
     const {id} = useParams();
     const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {user} = useAuth();
 
@@ -22,6 +23,12 @@ const PetDetails = () => {
     })
 
     const {petName, petAge, location, longDescription, category, image} = pet;
+
+    const handleAdopt = () => {
+        if(!user){
+            return navigate('/login')
+        }
+    }
 
     return (
         <section className="pt-24 lg:pb-0 pb-16">
@@ -41,7 +48,10 @@ const PetDetails = () => {
                     <h1 className="mt-2"><span className="font-semibold">Category :</span> {category}</h1>
                     <h1 className="mt-2"><span className="font-semibold">Details  :</span> {longDescription}</h1>
                     <button 
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                        handleAdopt(),
+                        setIsModalOpen(true);
+                    }}
                     className="px-5 py-2 bg-green-500 text-white rounded-lg font-semibold mt-3 transition hover:bg-green-600"
                     >
                         Adopt

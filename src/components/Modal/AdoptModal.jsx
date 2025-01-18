@@ -24,10 +24,6 @@ const AdoptModal = ({ isOpen, onClose, pet, user }) => {
 
     const handleRequest = async (e) => {
 
-        if(!user){
-            return navigate('/login')
-        }
-
         e.preventDefault();
         const petData = {
             petName,
