@@ -6,14 +6,11 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getSort
 import toast from "react-hot-toast";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
-import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
 
 
 const AdoptionRequest = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const navigate = useNavigate();
 
     const { data: pets = [], refetch } = useQuery({
         queryKey: ["adoptRequest"],
@@ -23,10 +20,18 @@ const AdoptionRequest = () => {
         },
     });
 
-    const handleAdopt = (id) => {
-        axiosSecure.patch(`/pets/adopt/${id}`, { adopted: true }).then(() => {
+    const handleAccept = (id) => {
+        axiosSecure.patch(`/adopt-request/${id}`, { accept: true }).then(() => {
             refetch();
         });
+        toast.success('Adoption Request Accepted')
+    };
+
+    const handleReject = (id) => {
+        axiosSecure.patch(`/adopt-request/${id}`, { accept: false }).then(() => {
+            refetch();
+        });
+        toast.success('Adoption Request Rejected')
     };
 
     const columnHelper = createColumnHelper();
@@ -54,9 +59,20 @@ const AdoptionRequest = () => {
             header : () => (<p className="text-center">Phone Number</p>),
             cell : (info) => info.getValue()
         }),
-        columnHelper.accessor('status', {
+        columnHelper.accessor('accept', {
             header : () => (<p className="text-center">Status</p>),
-            cell : (info) => info.getValue()
+            cell : (info) => {
+                const status = info.getValue();
+                return (
+                    <p className={`text-center py-2 rounded-lg font-bold ${
+                        status === true ? 'bg-green-200 text-green-800' :
+                        status === false ? 'bg-[#ff00003f] text-red-600' :
+                        'bg-purple-300 text-purple-900 text-xs'
+                    }`}>
+                        {status === true ? 'Accepted' : status === false ? 'Rejected' : 'Not Accepted'}
+                    </p>
+                );
+            }
         }),
         columnHelper.display({
             id: "actions",
@@ -64,16 +80,19 @@ const AdoptionRequest = () => {
             cell : ({row}) => (
                 <div className="flex gap-2 justify-around items-center">
                     <button
-                        onClick={() => handleAdopt(row.original._id)}
-                        className={`p-2 text-white rounded font-bold ${row.original.adopted ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'}`}
+                        disabled={row.original.accept === false}
+                        onClick={() => handleAccept(row.original._id)}
+                        className={`p-2 text-white bg-green-500 rounded font-bold disabled:bg-gray-400 disabled:cursor-not-allowed`}
                     >
-                        {row.original.adopted ? 'Accepted' : 'Accept'}
+                        {row.original.accept ? 'Accepted' : 'Accept'}
                     </button>
                     <button
-                        className="p-2 bg-[#ff00003f] text-white rounded"
+                        onClick={() => handleReject(row.original._id)}
+                        disabled={row.original.accept === true}
+                        className={`p-2 rounded font-bold ${row.original.accept ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-[#ff00003f] text-red-600'}`}
                     >
-                        <div className=" text-[red]">
-                            Reject
+                        <div>
+                            {row.original.accept === false ? 'Rejected' : 'Reject'}
                         </div>
                     </button>
                 </div>
@@ -97,7 +116,7 @@ const AdoptionRequest = () => {
             <div className="overflow-x-auto rounded-lg">
                 {
                     pets.length === 0 ? (
-                        <p className="text-center text-3xl text-red-500 font-semibold mt-4">NO PETS ADDED</p>
+                        <p className="text-center text-3xl text-red-500 font-semibold mt-4">NO Adoption Request</p>
                     ) : (
                         <table className="w-full text-center bg-[#80008017] font-semibold">
                             <thead className="text-center bg-purple-600 text-white">
