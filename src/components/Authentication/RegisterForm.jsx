@@ -17,7 +17,7 @@ const RegisterForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state || '/';
-    const {saveUser} = useAuth();
+    const {saveUser, githubSignIn} = useAuth();
 
     const {
         register,
@@ -62,6 +62,19 @@ const RegisterForm = () => {
         } 
         catch (error) {
             toast.error('Registered failed. Please try again', error)
+        }
+    }
+
+    
+    const handleGithubLogin = async () => {
+        try {
+            const data = await githubSignIn();
+            saveUser(data.user);
+            toast.success('Login Successful!');
+            navigate(from);
+        } catch (error) {
+            toast.error('Login failed. Please try again', error);
+            console.log(error)
         }
     }
 
@@ -214,6 +227,7 @@ const RegisterForm = () => {
                         </button>
 
                         <button 
+                        onClick={handleGithubLogin}
                         className='py-3 w-full mt-2 rounded-lg font-bold flex items-center justify-center space-x-2 disabled:cursor-pointer border border-purple-500'
                         >
                             <FaGithub className='text-3xl' /> <span>Continue With Github</span>
