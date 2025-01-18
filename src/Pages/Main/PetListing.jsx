@@ -8,11 +8,14 @@ const PetListing = () => {
 
     const axiosPublic = useAxiosPublic();
     const [search, setSearch] = useState("");
+    const [category, setCategory] = useState("");
+
+    console.log(category)
 
     const {data : pets = [], refetch} = useQuery({
-        queryKey : ['allPets', search],
+        queryKey : ['allPets', search, category],
         queryFn : async () => {
-            const {data} = await axiosPublic(`/pets?search=${search}`)
+            const {data} = await axiosPublic(`/pets?search=${search}&category=${category}`)
             return data;
         }
     })
@@ -37,7 +40,9 @@ const PetListing = () => {
                     onChange={e => setSearch(e.target.value)}
                     />
 
-                    <select className="border border-purple-500 p-3 rounded-lg bg-inherit outline-0 focus:border-2 bg-purple-500 text-white font-semibold">
+                    <select 
+                    onChange={e => setCategory(e.target.value)}
+                    className="border border-purple-500 p-3 rounded-lg bg-inherit outline-0 focus:border-2 bg-purple-500 text-white font-semibold">
                         <option value="">Category</option>
                         <option value="Cat">Cat</option>
                         <option value="Dog">Dog</option>
@@ -46,16 +51,19 @@ const PetListing = () => {
                         <option value="Fish">Fish</option>
                     </select>
                 </div>
+                
 
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
+                <div>
                     {
-                        sortedPets.map(pet => (
+                        sortedPets.length === 0 ? <p className="flex items-center justify-center flex-col text-3xl text-red-500 min-h-[calc(100vh-200px)] font-bold">NO DATA FOUND</p> :
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
+                            {sortedPets.map(pet => (
                             <PetCard
                             key={pet._id}
                             pet={pet}
                             ></PetCard>
-                        ))
+                            ))}
+                        </div>
                     }
                 </div>
 
