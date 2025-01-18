@@ -18,6 +18,7 @@ import AllDonations from "@/Pages/Dashboard/AllDonations";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import UpdatePets from "@/Pages/Dashboard/UpdatePets";
+import PetDetails from "@/Pages/Main/PetDetails";
 
 const AppRoutes = () => {
 
@@ -26,11 +27,11 @@ const AppRoutes = () => {
             
             <Route path="/" element={<Main></Main>}>
 
-                {/* all nested routes here */}
                 <Route path="/" element={<Home></Home>}></Route>
                 <Route path="/login" element={<Login></Login>}></Route>
                 <Route path="/register" element={<Register></Register>}></Route>
                 <Route path="pet-listing" element={<PetListing></PetListing>}></Route>
+                <Route path="/pet-details/:id" element={<PetDetails></PetDetails>}></Route>
                 <Route path="donation-campaign" element={<DonationCampaign></DonationCampaign>}></Route>
 
 
