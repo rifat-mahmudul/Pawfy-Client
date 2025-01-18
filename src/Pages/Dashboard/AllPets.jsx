@@ -1,189 +1,220 @@
-import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import HelmetTitle from "@/Shared/HelmetTitle";
 import { useQuery } from "@tanstack/react-query";
-import {
-    createColumnHelper,
-    useReactTable,
-    getCoreRowModel,
-    getSortedRowModel,
-    getPaginationRowModel,
-    flexRender,
-} from "@tanstack/react-table";
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getSortedRowModel, getPaginationRowModel } from "@tanstack/react-table";
+import toast from "react-hot-toast";
+import { FaPencil } from "react-icons/fa6";
+import { MdDeleteForever } from "react-icons/md";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+
 
 const MyAddPets = () => {
+    const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
-
-
-
-    const { user } = useAuth(); // Get logged-in user's info
-    const axiosSecure = useAxiosSecure(); // For secure API requests
-    const navigate = useNavigate(); // Navigation hook
-
-    // Fetching the user's added pets
     const { data: pets = [], refetch } = useQuery({
         queryKey: ["pets"],
         queryFn: async () => {
-            const { data } = await axiosSecure(`/pets/${user?.email}`);
+            const { data } = await axiosSecure(`/pets`);
             return data;
         },
     });
 
-    // TanStack Table column helper
-    const columnHelper = createColumnHelper();
-
-    // Defining table columns
-    const columns = [
-        columnHelper.accessor((_, rowIndex) => rowIndex + 1, {
-            id: "serial",
-            header: "S/N",
-            cell: (info) => info.getValue(),
-        }),
-        columnHelper.accessor("petName", {
-            header: "Pet Name",
-            cell: (info) => info.getValue(),
-        }),
-        columnHelper.accessor("category", {
-            header: "Category",
-            cell: (info) => info.getValue(),
-        }),
-        columnHelper.accessor("image", {
-            header: "Image",
-            cell: ({ row }) => (
-                <img
-                    src={row.original.image}
-                    alt={row.original.name}
-                    className="w-16 h-16 object-cover rounded"
-                />
-            ),
-        }),
-        columnHelper.accessor("adopted", {
-            header: "Adoption Status",
-            cell: ({ row }) =>
-                row.original.adopted ? "Adopted" : "Not Adopted",
-        }),
-        columnHelper.display({
-            header: "Actions",
-            cell: ({ row }) => (
-                <div className="flex gap-2">
-                    <button
-                        className="px-3 py-1 bg-blue-500 text-white rounded"
-                        onClick={() =>
-                            navigate(`/update-pet/${row.original.id}`)
-                        }
-                    >
-                        Update
-                    </button>
-                    <button
-                        className="px-3 py-1 bg-red-500 text-white rounded"
-                        onClick={() => handleDelete(row.original.id)}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        className="px-3 py-1 bg-green-500 text-white rounded"
-                        onClick={() => handleAdopt(row.original.id)}
-                    >
-                        {row.original.adopted ? "Adopted" : "Adopt"}
-                    </button>
-                </div>
-            ),
-        }),
-    ];
-
-    // Functions for handling actions
     const handleDelete = (id) => {
-        if (confirm("Are you sure you want to delete this pet?")) {
-            axiosSecure.delete(`/pets/${id}`).then(() => {
-                refetch(); // Refetch data after deletion
-            });
-        }
-    };
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axiosSecure.delete(`/pet/${id}`)
+                    toast.success('Pet has been deleted')
+                } catch (error) {
+                    console.log(`error from delete pets : ${error}`)
+                } finally {
+                    refetch()
+                }
+            }
+        });
+    }
 
     const handleAdopt = (id) => {
         axiosSecure.patch(`/pets/adopt/${id}`, { adopted: true }).then(() => {
-            refetch(); // Refetch data after adoption
+            refetch();
         });
     };
 
-    // Table instance
+    const columnHelper = createColumnHelper();
+
+    const columns = [
+        columnHelper.accessor((_,rowIndex) => rowIndex + 1, {
+            id : "serial",
+            header : () => (<p className="text-center">S/N</p>),
+            cell : (info) => info.getValue()
+        }),
+        columnHelper.accessor('image', {
+            header : () => (<p className="text-center">Image</p>),
+            cell : (info) => (
+                <img className="h-12 w-12 rounded-lg mx-auto" src={info.getValue()} alt="" />
+            )
+        }),
+        columnHelper.accessor('petName', {
+            header : () => (<p className="text-center">Pet Name</p>),
+            cell : (info) => info.getValue()
+        }),
+        columnHelper.accessor('category', {
+            header : () => (<p className="text-center">Category</p>),
+            cell : (info) => info.getValue()
+        }),
+        columnHelper.accessor('adopted', {
+            header : () => (<p className="text-center">Status</p>),
+            cell : (info) => 
+                (info.getValue() ?
+                    <p className="bg-green-200 text-center py-2 rounded-lg text-green-800 font-bold">Adopted</p> : 
+                    <p className="bg-purple-300 text-center py-2 rounded-lg text-purple-900 font-bold">Not Adopted</p>
+                )
+        }),
+        columnHelper.display({
+            id: "actions",
+            header: () => <p className="text-center">Actions</p>,
+            cell : ({row}) => (
+                <div className="flex gap-2 justify-around items-center">
+                    <button
+                        onClick={() => {
+                            navigate(`/dashboard/update-pet/${row.original._id}`)
+                        }}
+                        className="p-3 bg-[#0000ff64] text-white rounded"
+                    >
+                        <div className="text-lg text-[blue]">
+                            <FaPencil></FaPencil>
+                        </div>
+                    </button>
+                    <button
+                        onClick={() => handleDelete(row.original._id)}
+                        className="p-3 bg-[#ff00003f] text-white rounded"
+                    >
+                        <div className="text-xl text-[red]">
+                            <MdDeleteForever></MdDeleteForever>
+                        </div>
+                    </button>
+                    <button
+                        onClick={() => handleAdopt(row.original._id)}
+                        className={`p-2 text-white rounded font-bold ${row.original.adopted ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'}`}
+                    >
+                        {row.original.adopted ? 'Adopted' : 'Adopt'}
+                    </button>
+                    
+                </div>
+            )
+        })
+    ]
+    
     const table = useReactTable({
-        data: pets,
+        data : pets,
         columns,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-    });
+        getCoreRowModel : getCoreRowModel(),
+        getSortedRowModel : getSortedRowModel(),
+        getPaginationRowModel : getPaginationRowModel()
+    })
+
 
     return (
-        <section>
+        <section className="pb-16">
             <HelmetTitle title="My Added Pets"></HelmetTitle>
-            <div className="p-4">
-                <table className="min-w-full border-collapse border border-gray-200">
-                    <thead>
+
+            <div className="lg:overflow-hidden overflow-x-auto rounded-lg">
+
+                <table className="w-full text-center bg-[#80008017] font-semibold">
+                    <thead className="text-center bg-purple-600 text-white">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <tr key={headerGroup.id}>
+                            <tr
+                            key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <th
-                                        key={header.id}
-                                        className="border border-gray-300 px-4 py-2 text-left cursor-pointer"
-                                        onClick={header.column.getToggleSortingHandler()}
-                                    >
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                        {{
-                                            asc: " 🔼",
-                                            desc: " 🔽",
-                                        }[header.column.getIsSorted()] || null}
-                                    </th>
+                                    key={header.id}
+                                    className={`border border-gray-300 px-4 py-4 text-left cursor-pointer ${
+                                        header.column.getIsSorted() ? "bg-purple-600 text-white" : ""
+                                    }`}
+                                    onClick={header.column.getToggleSortingHandler()}
+                                >
+                                    <div className="flex items-center justify-center">
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
+                                        <span className="ml-2">
+                                            {{
+                                                asc: <span className="text-blue-500 text-lg">🔼</span>,
+                                                desc: <span className="text-red-500 text-lg">🔽</span>,
+                                            }[header.column.getIsSorted()] || (
+                                                <span className="text-gray-400 text-lg">↕️</span>
+                                            )}
+                                        </span>
+                                    </div>
+                                </th>
                                 ))}
                             </tr>
                         ))}
                     </thead>
+
                     <tbody>
-                        {table.getRowModel().rows.map((row) => (
-                            <tr key={row.id} className="hover:bg-gray-100">
-                                {row.getVisibleCells().map((cell) => (
-                                    <td
-                                        key={cell.id}
-                                        className="border border-gray-300 px-4 py-2"
-                                    >
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
+                        {
+                            table.getRowModel().rows.map((row) => (
+                                <tr 
+                                className=" even:bg-[#80808023]"
+                                key={row.id}>
+                                    {
+                                        row.getVisibleCells().map((cell) => (
+                                            <td key={cell.id} className="border border-purple-500 px-4 py-2">
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </td>
+                                        ))
+                                    }
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
 
-                {/* Pagination */}
-                <div className="mt-4 flex justify-between items-center">
-                    <button
+            </div>
+
+            {/* pagination */}
+            
+            {
+                pets.length > 10 && (
+                    <div className="flex justify-end space-x-5 items-center mt-4">
+                        <button 
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
-                        className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-                    >
-                        Previous
-                    </button>
-                    <span>
-                        Page {table.getState().pagination.pageIndex + 1} of{" "}
-                        {table.getPageCount()}
-                    </span>
-                    <button
+                        className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-600 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed">
+                            <h1 className="text-lg"><MdKeyboardDoubleArrowLeft /></h1>
+                            <h1>Previous</h1>
+                        </button>
+
+                        <span className="font-semibold">
+                            {table.getState().pagination.pageIndex + 1} / {" "} {table.getPageCount()}
+                        </span>
+
+                        <button 
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
-                        className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
+                        className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-500 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed"
+                        >
+                            <h1>Next</h1>
+                            <h1 className="text-lg"><MdKeyboardDoubleArrowRight /></h1>
+                        </button>
+                    </div>
+                )
+            }
+
         </section>
     );
 };

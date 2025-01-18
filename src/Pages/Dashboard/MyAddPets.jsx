@@ -190,28 +190,32 @@ const MyAddPets = () => {
 
             {/* pagination */}
             
-            <div className="flex justify-end space-x-5 items-center mt-4">
-                    <button 
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                    className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-600 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed">
-                        <h1 className="text-lg"><MdKeyboardDoubleArrowLeft /></h1>
-                        <h1>Previous</h1>
-                    </button>
+            {
+                pets.length > 10 && (
+                    <div className="flex justify-end space-x-5 items-center mt-4">
+                        <button 
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                        className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-600 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed">
+                            <h1 className="text-lg"><MdKeyboardDoubleArrowLeft /></h1>
+                            <h1>Previous</h1>
+                        </button>
 
-                    <span className="font-semibold">
-                        {table.getState().pagination.pageIndex + 1} / {" "} {table.getPageCount()}
-                    </span>
+                        <span className="font-semibold">
+                            {table.getState().pagination.pageIndex + 1} / {" "} {table.getPageCount()}
+                        </span>
 
-                    <button 
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                    className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-500 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed"
-                    >
-                        <h1>Next</h1>
-                        <h1 className="text-lg"><MdKeyboardDoubleArrowRight /></h1>
-                    </button>
-                </div>
+                        <button 
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                        className="py-2 sm:px-5 px-3 rounded-3xl bg-purple-500 text-white flex items-center space-x-1 disabled:bg-purple-400 disabled:cursor-not-allowed"
+                        >
+                            <h1>Next</h1>
+                            <h1 className="text-lg"><MdKeyboardDoubleArrowRight /></h1>
+                        </button>
+                    </div>
+                )
+            }
 
         </section>
     );
