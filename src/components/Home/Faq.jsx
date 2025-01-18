@@ -8,7 +8,7 @@ const Faq = () => {
 
             <div className="max-w-[90%] xl:max-w-[1200px] mx-auto">
 
-                <h1 className="text-center text-4xl font-bold">Frequently Asked Question</h1>
+                <h1 className="text-center text-4xl font-bold text-purple-700">Frequently Asked Question</h1>
 
                 <div className="p-5 rounded-lg mt-5">
 

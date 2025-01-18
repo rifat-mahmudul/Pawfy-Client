@@ -15,9 +15,9 @@ const PetsCategory = () => {
 
             <div className="xl:max-w-[1200px] max-w-[90%] mx-auto">
 
-                <h1 className="text-center text-4xl font-bold">Pets Category</h1>
+                <h1 className="text-center text-4xl font-bold text-purple-700">Pets Category</h1>
 
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-10 sm:max-w-[800px] mx-auto mt-8">
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-10 sm:max-w-[900px] mx-auto mt-8">
                     <NavLink 
                     className={({isActive}) => (isActive ? `flex items-center border border-purple-600 py-2 px-5 rounded-lg text-xl space-x-1 bg-purple-500 text-white` : `flex items-center border border-purple-600 py-2 px-5 rounded-lg text-xl space-x-1 ${theme === 'light' ? 'bg-purple-200' : 'bg-inherit'}`)}
                     to={'/'}

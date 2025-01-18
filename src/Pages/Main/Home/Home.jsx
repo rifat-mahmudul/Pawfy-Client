@@ -5,6 +5,7 @@ import { Outlet } from "react-router"
 import Faq from "@/components/Home/Faq"
 import CallToAction from "@/components/Home/CallToAction"
 import AboutUsSection from "@/components/Home/AboutUs/AboutUsSection"
+import SuccessStoriesSection from "@/components/Home/SuccessStory/SuccessStoriesSection"
 
 const Home = () => {
     return (
@@ -19,6 +20,7 @@ const Home = () => {
             </div>
             <CallToAction></CallToAction>
             <AboutUsSection></AboutUsSection>
+            <SuccessStoriesSection></SuccessStoriesSection>
             <Faq></Faq>
 
         </section>
