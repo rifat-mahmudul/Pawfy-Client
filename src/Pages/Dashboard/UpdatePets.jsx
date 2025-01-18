@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
+import useRole from "@/Hooks/useRole";
 
 const UpdatePet = () => {
 
@@ -19,6 +20,7 @@ const UpdatePet = () => {
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
     const axiosSecure = useAxiosSecure();
+    const [role] = useRole();
 
     const handleDescriptionChange = (value) => {
         setDescription(value);
@@ -33,7 +35,7 @@ const UpdatePet = () => {
     ];
 
     const { id } = useParams();
-    const { data: pet = {} } = useQuery({
+    const { data: pet = {}, refetch } = useQuery({
         queryKey: ['singlePet', id],
         queryFn: async () => {
             const { data } = await axiosSecure(`/pet/${id}`);
@@ -64,10 +66,13 @@ const UpdatePet = () => {
         const sortDescription = form.elements.sortDescription.value;
         const category = selectedOption?.value;
         const image = form.image.files;
-        let imageUrl = image || pet.image;
+        let imageUrl = pet.image;
 
-        if (image && image !== pet.image) {
-            imageUrl = await imageUpload(image);
+        console.log(imageUrl)
+
+        if (image.length > 0) {
+            const uploadResponse = await imageUpload(image);
+            imageUrl = uploadResponse?.data?.display_url || null;
         }
 
         const petData = {
@@ -77,17 +82,23 @@ const UpdatePet = () => {
             sortDescription,
             category,
             longDescription: plainTextDescription,
-            image: imageUrl.data.display_url
+            image: imageUrl
         };
 
         try {
             await mutateAsync(petData);
             toast.success('Pet updated successfully!');
-            navigate('/dashboard/my-added-pets');
+            if(role === 'admin') {
+                navigate('/dashboard/all-pets');
+            }
+            else{
+                navigate('/dashboard/my-added-pets');
+            }
         } catch (error) {
             console.log('Error from update pets:', error);
             toast.error('Update failed. Please try again!');
         }
+        refetch();
         setLoading(false);
     };
 

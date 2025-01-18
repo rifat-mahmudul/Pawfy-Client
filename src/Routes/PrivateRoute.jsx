@@ -9,7 +9,6 @@ const PrivateRoute = ({children}) => {
     const {user, loading} = useAuth();
     const location = useLocation();
 
-    // if(loading) return <h1 className="min-h-screen flex items-center justify-center">Loading....</h1>
     if(loading) return <SkeletonLoader></SkeletonLoader>
     
     if(user) return children
