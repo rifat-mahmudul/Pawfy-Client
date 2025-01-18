@@ -19,6 +19,11 @@ import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import UpdatePets from "@/Pages/Dashboard/UpdatePets";
 import PetDetails from "@/Pages/Main/PetDetails";
+import Cat from "@/components/category/Cat";
+import Bird from "@/components/category/Bird";
+import Rabbit from "@/components/category/Rabbit";
+import Fish from "@/components/category/Fish";
+import Dog from "@/components/category/Dog";
 
 const AppRoutes = () => {
 
@@ -27,7 +32,18 @@ const AppRoutes = () => {
             
             <Route path="/" element={<Main></Main>}>
 
-                <Route path="/" element={<Home></Home>}></Route>
+                <Route path="/" element={<Home></Home>}>
+
+                    {/* category nested route */}
+                    <Route path="/" element={<Cat></Cat>}></Route>
+                    <Route path="dog" element={<Dog></Dog>}></Route>
+                    <Route path="bird" element={<Bird></Bird>}></Route>
+                    <Route path="rabbit" element={<Rabbit></Rabbit>}></Route>
+                    <Route path="fish" element={<Fish></Fish>}></Route>
+                
+                </Route>
+
+
                 <Route path="/login" element={<Login></Login>}></Route>
                 <Route path="/register" element={<Register></Register>}></Route>
                 <Route path="/pet-listing" element={<PetListing></PetListing>}></Route>

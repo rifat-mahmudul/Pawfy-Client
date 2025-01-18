@@ -1,5 +1,7 @@
 import Banner from "@/components/Home/Banner"
 import HelmetTitle from "../../../Shared/HelmetTitle"
+import PetsCategory from "@/components/Home/PetsCategory"
+import { Outlet } from "react-router"
 
 const Home = () => {
     return (
@@ -8,6 +10,10 @@ const Home = () => {
             <HelmetTitle title={'Home'}></HelmetTitle>
             
             <Banner></Banner>
+            <PetsCategory></PetsCategory>
+            <div>
+                <Outlet></Outlet>
+            </div>
 
         </section>
     )
