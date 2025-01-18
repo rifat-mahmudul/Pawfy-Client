@@ -4,7 +4,7 @@ import FaqQuestion from "../shared/FaqQuestion"
 const Faq = () => {
 
     return (
-        <section className="pb-24 overflow-hidden">
+        <section className="pb-16 overflow-hidden">
 
             <div className="max-w-[90%] xl:max-w-[1200px] mx-auto">
 

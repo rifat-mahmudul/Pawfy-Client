@@ -3,6 +3,7 @@ import HelmetTitle from "../../../Shared/HelmetTitle"
 import PetsCategory from "@/components/Home/PetsCategory"
 import { Outlet } from "react-router"
 import Faq from "@/components/Home/Faq"
+import CallToAction from "@/components/Home/CallToAction"
 
 const Home = () => {
     return (
@@ -15,6 +16,7 @@ const Home = () => {
             <div>
                 <Outlet></Outlet>
             </div>
+            <CallToAction></CallToAction>
             <Faq></Faq>
 
         </section>
