@@ -12,7 +12,7 @@ const PetListing = () => {
 
     console.log(category)
 
-    const {data : pets = [], refetch} = useQuery({
+    const {data : pets = [], refetch, isLoading} = useQuery({
         queryKey : ['allPets', search, category],
         queryFn : async () => {
             const {data} = await axiosPublic(`/pets?search=${search}&category=${category}`)
@@ -52,21 +52,23 @@ const PetListing = () => {
                     </select>
                 </div>
                 
-
                 <div>
-                    {
-                        sortedPets.length === 0 ? <p className="flex items-center justify-center flex-col text-3xl text-red-500 min-h-[calc(100vh-200px)] font-bold">NO DATA FOUND</p> :
+                    {isLoading ? (
+                        <p className="flex items-center justify-center flex-col text-3xl text-purple-500 min-h-[calc(100vh-200px)] font-bold">
+                            Loading...
+                        </p>
+                    ) : sortedPets.length === 0 ? (
+                        <p className="flex items-center justify-center flex-col text-3xl text-red-500 min-h-[calc(100vh-200px)] font-bold">
+                            NO DATA FOUND
+                        </p>
+                    ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
                             {sortedPets.map(pet => (
-                            <PetCard
-                            key={pet._id}
-                            pet={pet}
-                            ></PetCard>
+                                <PetCard key={pet._id} pet={pet}></PetCard>
                             ))}
                         </div>
-                    }
+                    )}
                 </div>
-
             </div>
 
             
