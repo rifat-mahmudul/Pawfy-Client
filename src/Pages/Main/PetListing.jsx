@@ -2,15 +2,17 @@ import PetCard from "@/components/Card/PetCard";
 import useAxiosPublic from "@/Hooks/useAxiosPublic"
 import HelmetTitle from "@/Shared/HelmetTitle"
 import { useQuery } from "@tanstack/react-query"
+import { useState } from "react";
 
 const PetListing = () => {
 
     const axiosPublic = useAxiosPublic();
+    const [search, setSearch] = useState("");
 
-    const {data : pets = []} = useQuery({
-        queryKey : ['allPets'],
+    const {data : pets = [], refetch} = useQuery({
+        queryKey : ['allPets', search],
         queryFn : async () => {
-            const {data} = await axiosPublic('/pets')
+            const {data} = await axiosPublic(`/pets?search=${search}`)
             return data;
         }
     })
@@ -19,7 +21,7 @@ const PetListing = () => {
 
     const sortedPets = noAdoptedPets.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    console.log(noAdoptedPets)
+    refetch();
 
     return (
         <section className="pt-20 pb-16">
@@ -32,6 +34,7 @@ const PetListing = () => {
                     type="text" 
                     className="border border-purple-500 p-3 w-full rounded-lg outline-0 focus:border-2 bg-inherit"
                     placeholder="Search by pet's name"
+                    onChange={e => setSearch(e.target.value)}
                     />
 
                     <select className="border border-purple-500 p-3 rounded-lg bg-inherit outline-0 focus:border-2 bg-purple-500 text-white font-semibold">
