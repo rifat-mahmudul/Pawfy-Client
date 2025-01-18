@@ -133,59 +133,53 @@ const MyAddPets = () => {
             <HelmetTitle title="My Added Pets"></HelmetTitle>
 
             <div className="lg:overflow-hidden overflow-x-auto rounded-lg">
-
-                <table className="w-full text-center bg-[#80008017] font-semibold">
-                    <thead className="text-center bg-purple-600 text-white">
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <tr
-                            key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <th
-                                    key={header.id}
-                                    className={`border border-gray-300 px-4 py-4 text-left cursor-pointer ${
-                                        header.column.getIsSorted() ? "bg-purple-600 text-white" : ""
-                                    }`}
-                                    onClick={header.column.getToggleSortingHandler()}
-                                >
-                                    <div className="flex items-center justify-center">
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                        <span className="ml-2">
-                                            {{
-                                                asc: <span className="text-blue-500 text-lg">🔼</span>,
-                                                desc: <span className="text-red-500 text-lg">🔽</span>,
-                                            }[header.column.getIsSorted()] || (
-                                                <span className="text-gray-400 text-lg">↕️</span>
-                                            )}
-                                        </span>
-                                    </div>
-                                </th>
+                {
+                    pets.length === 0 ? (
+                        <p className="text-center text-3xl text-red-500 font-semibold mt-4">NO PETS ADDED</p>
+                    ) : (
+                        <table className="w-full text-center bg-[#80008017] font-semibold">
+                            <thead className="text-center bg-purple-600 text-white">
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <tr key={headerGroup.id}>
+                                        {headerGroup.headers.map((header) => (
+                                            <th
+                                                key={header.id}
+                                                className={`border border-gray-300 px-4 py-4 text-left cursor-pointer ${
+                                                    header.column.getIsSorted() ? "bg-purple-600 text-white" : ""
+                                                }`}
+                                                onClick={header.column.getToggleSortingHandler()}
+                                            >
+                                                <div className="flex items-center justify-center">
+                                                    {flexRender(header.column.columnDef.header, header.getContext())}
+                                                    <span className="ml-2">
+                                                        {{
+                                                            asc: <span className="text-blue-500 text-lg">🔼</span>,
+                                                            desc: <span className="text-red-500 text-lg">🔽</span>,
+                                                        }[header.column.getIsSorted()] || (
+                                                            <span className="text-gray-400 text-lg">↕️</span>
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            </th>
+                                        ))}
+                                    </tr>
                                 ))}
-                            </tr>
-                        ))}
-                    </thead>
+                            </thead>
 
-                    <tbody>
-                        {
-                            table.getRowModel().rows.map((row) => (
-                                <tr 
-                                className=" even:bg-[#80808023]"
-                                key={row.id}>
-                                    {
-                                        row.getVisibleCells().map((cell) => (
+                            <tbody>
+                                {table.getRowModel().rows.map((row) => (
+                                    <tr className="even:bg-[#80808023]" key={row.id}>
+                                        {row.getVisibleCells().map((cell) => (
                                             <td key={cell.id} className="border border-purple-500 px-4 py-2">
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
-                                                )}
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </td>
-                                        ))
-                                    }
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )
+                }
             </div>
 
             {/* pagination */}
