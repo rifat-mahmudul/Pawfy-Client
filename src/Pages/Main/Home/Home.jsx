@@ -2,6 +2,7 @@ import Banner from "@/components/Home/Banner"
 import HelmetTitle from "../../../Shared/HelmetTitle"
 import PetsCategory from "@/components/Home/PetsCategory"
 import { Outlet } from "react-router"
+import Faq from "@/components/Home/Faq"
 
 const Home = () => {
     return (
@@ -14,6 +15,7 @@ const Home = () => {
             <div>
                 <Outlet></Outlet>
             </div>
+            <Faq></Faq>
 
         </section>
     )
