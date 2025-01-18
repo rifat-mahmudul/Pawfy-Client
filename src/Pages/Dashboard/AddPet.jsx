@@ -31,7 +31,7 @@ const AddPet = () => {
         { value: 'Dog', label: 'Dog' },
         { value: 'Bird', label: 'Bird' },
         { value: 'Rabbits', label: 'Rabbits' },
-        { value: 'Mouse', label: 'Mouse' },
+        { value: 'Fish', label: 'Fish' },
     ];
 
     const {
