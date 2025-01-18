@@ -3,7 +3,7 @@ import dogFamily from '../../assets/dog-family.jpg'
 
 const CallToAction = () => {
     return (
-        <section className="relative bg-gray-100 py-16 mb-16">
+        <section className="relative bg-gray-100 py-16 mb-16 mt-4">
             <div className="max-w-[1200px] xl:max-w-[90%] mx-auto">
                 {/* Background Images */}
                 <div

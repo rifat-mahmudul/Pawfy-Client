@@ -4,6 +4,7 @@ import PetsCategory from "@/components/Home/PetsCategory"
 import { Outlet } from "react-router"
 import Faq from "@/components/Home/Faq"
 import CallToAction from "@/components/Home/CallToAction"
+import AboutUsSection from "@/components/Home/AboutUs/AboutUsSection"
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
                 <Outlet></Outlet>
             </div>
             <CallToAction></CallToAction>
+            <AboutUsSection></AboutUsSection>
             <Faq></Faq>
 
         </section>
