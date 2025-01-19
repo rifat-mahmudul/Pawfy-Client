@@ -82,9 +82,17 @@ const CheckoutForm = ({onClose, campaignData, refetch}) => {
 
         if(paymentIntent.status === 'succeeded'){
             try {
+
+                const { data } = await axiosSecure.get(`/campaign/${campaignData?.petId}`);
+                const previousDonatedAmount = data?.donatedAmount || 0;
+
+                // Add new donation to the previous amount
+                const updatedDonatedAmount = previousDonatedAmount + Number(amount);
+
                 await axiosSecure.patch(`/donation/${campaignData?.petId}`, {
                     donator : campaignData?.donator,
-                    donatedAmount : Number(amount),
+                    donatedAmount : Number(updatedDonatedAmount),
+                    donated : true,
                     transactionId: paymentIntent?.id,
                 } )
                 toast.success('Donation Successful!');
