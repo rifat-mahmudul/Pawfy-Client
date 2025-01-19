@@ -137,7 +137,7 @@ const MyDonationCampaigns = () => {
             <div className="lg:overflow-hidden overflow-x-auto rounded-lg">
                 {
                     pets.length === 0 ? (
-                        <p className="text-center text-3xl text-red-500 font-semibold mt-4">NO PETS ADDED</p>
+                        <p className="text-center text-3xl text-red-500 font-semibold mt-4">NO Campaigns ADDED</p>
                     ) : (
                         <table className="w-full text-center bg-[#80008017] font-semibold">
                             <thead className="text-center bg-purple-600 text-white">
