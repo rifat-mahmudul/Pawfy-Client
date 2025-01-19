@@ -41,7 +41,7 @@ const DonationCampaign = () => {
 
     return (
         <section className="pt-20 pb-16">
-            <HelmetTitle title="Pet Listing"></HelmetTitle>
+            <HelmetTitle title="Donation Campaign"></HelmetTitle>
 
             <div className="max-w-[90%] xl:max-w-[1200px] mx-auto">
 

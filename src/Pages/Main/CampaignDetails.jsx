@@ -1,4 +1,5 @@
 import SkeletonLoader from "@/components/Loader/SkeletonLoader";
+import PaymentModal from "@/components/Modal/Payment/PaymentModal";
 // import AdoptModal from "@/components/Modal/AdoptModal";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
@@ -23,7 +24,20 @@ const CampaignDetails = () => {
         }
     })
 
-    const {petName, maximumDonation, sortDescription, longDescription, lastDate, image} = campaign;
+    const {petName, maximumDonation, sortDescription, longDescription, lastDate, image, userEmail, _id} = campaign;
+
+    const campaignData = {
+        petName, 
+        maximumDonation, 
+        image, 
+        donator : {
+            name : user?.displayName,
+            photo : user?.photoURL,
+            email : user?.email
+        },
+        petOwner : userEmail,
+        petId : _id
+    }
 
     const handleDonate = () => {
         if(!user){
@@ -36,7 +50,7 @@ const CampaignDetails = () => {
     return (
         <section className="pt-24 lg:pb-0 pb-16">
 
-            <HelmetTitle title="Pet Details"></HelmetTitle>
+            <HelmetTitle title="Donation Details"></HelmetTitle>
 
             <div className="max-w-[90%] xl:max-w-[1000px] mx-auto flex sm:flex-row flex-col gap-10 border border-purple-300 p-4 rounded-lg shadow-xl">
                 
@@ -62,12 +76,12 @@ const CampaignDetails = () => {
                 </div>
 
                 {/* modal components */}
-                {/* <AdoptModal
+                <PaymentModal
+                    campaignData={campaignData}
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
-                    pet={pet}
                     user={user}
-                /> */}
+                />
 
             </div>
 
