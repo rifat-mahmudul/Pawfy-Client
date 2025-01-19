@@ -3,19 +3,24 @@ import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import HelmetTitle from "@/Shared/HelmetTitle";
 import { useQuery } from "@tanstack/react-query";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getSortedRowModel, getPaginationRowModel } from "@tanstack/react-table";
-import toast from "react-hot-toast";
 import { FaPencil } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import DonatorsModal from "@/components/Modal/DonatorsModal";
 
 
 const MyDonationCampaigns = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [donators, setDonators] = useState({});
+    const [selectedCampaign, setSelectedCampaign] = useState(null);
 
     const { data: pets = [], refetch } = useQuery({
         queryKey: ["my-donation-campaign"],
@@ -26,9 +31,28 @@ const MyDonationCampaigns = () => {
     });
 
     const handleTogglePause = (id, currentPauseState) => {
-        axiosSecure.patch(`/donation/${id}`, { pause: !currentPauseState }).then(() => {
+        axiosSecure.patch(`/donationCampaign/${id}`, { pause: !currentPauseState }).then(() => {
             refetch();
         });
+    };
+
+    const handleViewDonators = async (campaignId) => {
+        setSelectedCampaign(campaignId);
+        try {
+            const { data } = await axiosSecure.get(`/campaign/${campaignId}`);
+            setDonators(data);
+            console.log(data)
+            setIsModalOpen(true);
+        } catch (error) {
+            toast.error("Failed to fetch donators");
+            console.error("Error fetching donators:", error);
+        }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setDonators({});
+        setSelectedCampaign(null);
     };
 
     const columnHelper = createColumnHelper();
@@ -95,7 +119,7 @@ const MyDonationCampaigns = () => {
                     </button>
         
                     <button
-                        onClick={() => handleAdopt(row.original._id)}
+                        onClick={() => handleViewDonators(row.original._id)}
                         className="flex items-center space-x-1 p-3 bg-purple-500 text-white rounded"
                     >
                         <FaEye /> <h1>Donators</h1>
@@ -196,6 +220,13 @@ const MyDonationCampaigns = () => {
                     </div>
                 )
             }
+
+            <DonatorsModal
+            isOpen={isModalOpen}
+            donators={donators}
+            onClose={closeModal}
+            >
+            </DonatorsModal>
 
         </section>
     );

@@ -89,7 +89,18 @@ const CheckoutForm = ({onClose, campaignData, refetch}) => {
                 // Add new donation to the previous amount
                 const updatedDonatedAmount = previousDonatedAmount + Number(amount);
 
-                await axiosSecure.patch(`/donation/${campaignData?.petId}`, {
+                const donatorData = {
+                    ...campaignData, 
+                        donated : true,  
+                        transactionId: paymentIntent?.id,
+                        donatedAmount : Number(amount),
+                }
+
+                await axiosSecure.post(`/all-donation`, {
+                    donatorData
+                } )
+
+                await axiosSecure.patch(`/donationCampaign/${campaignData?.petId}`, {
                     donator : campaignData?.donator,
                     donatedAmount : Number(updatedDonatedAmount),
                     donated : true,
