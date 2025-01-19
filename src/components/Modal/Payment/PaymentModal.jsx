@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types'
 import CheckoutForm from './CheckoutForm';
 
-const PaymentModal = ({ isOpen, onClose, campaignData }) => {
+const PaymentModal = ({ isOpen, onClose, campaignData, refetch }) => {
 
     const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
     const maximumDonation = campaignData.maximumDonation;
@@ -24,6 +24,7 @@ const PaymentModal = ({ isOpen, onClose, campaignData }) => {
                 <div>
                     <Elements stripe={stripePromise}>
                         <CheckoutForm
+                        refetch={refetch}
                         campaignData={campaignData}
                         onClose={onClose}
                         >
@@ -39,7 +40,8 @@ PaymentModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     user: PropTypes.object,
-    campaignData : PropTypes.object
+    campaignData : PropTypes.object,
+    refetch : PropTypes.func,
 };
 
 export default PaymentModal;

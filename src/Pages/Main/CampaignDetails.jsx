@@ -16,7 +16,7 @@ const CampaignDetails = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {user} = useAuth();
 
-    const {data : campaign = {}, isLoading} = useQuery({
+    const {data : campaign = {}, isLoading, refetch} = useQuery({
         queryKey : ['details-campaign', id], 
         queryFn : async () => {
             const {data} = await axiosPublic(`/campaign/${id}`);
@@ -77,6 +77,7 @@ const CampaignDetails = () => {
 
                 {/* modal components */}
                 <PaymentModal
+                    refetch={refetch}
                     campaignData={campaignData}
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}

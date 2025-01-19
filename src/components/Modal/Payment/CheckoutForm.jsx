@@ -4,17 +4,18 @@ import './Checkout.css'
 import toast from "react-hot-toast";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { ImSpinner9 } from "react-icons/im";
 
-const CheckoutForm = ({onClose, campaignData}) => {
+const CheckoutForm = ({onClose, campaignData, refetch}) => {
 
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
     const [amount, setAmount] = useState();
-    const [clientSecret, setClientSecret] = useState('')
+    const [clientSecret, setClientSecret] = useState('');
+    const navigate = useNavigate();
     const [processing, setProcessing] = useState(false)
-
-    const donationCampaignData = {...campaignData, amount}
 
     useEffect(() => {
         if (amount) {
@@ -26,8 +27,8 @@ const CheckoutForm = ({onClose, campaignData}) => {
 
         try {
             const {data} = await axiosSecure.post('/create-payment-intent', {
-                amount : donationCampaignData.amount,
-                petId : donationCampaignData.petId
+                amount : amount,
+                petId : campaignData.petId
             })
             setClientSecret(data.clientSecret);
         } catch (error) {
@@ -36,6 +37,7 @@ const CheckoutForm = ({onClose, campaignData}) => {
     }
 
     const handleSubmit = async (e) => {
+        setProcessing(true)
         e.preventDefault();
 
         if (!stripe || !elements) {
@@ -50,6 +52,7 @@ const CheckoutForm = ({onClose, campaignData}) => {
         const card = elements.getElement(CardElement);
 
         if (card == null) {
+            setProcessing(false)
             return;
         }
 
@@ -60,9 +63,38 @@ const CheckoutForm = ({onClose, campaignData}) => {
         });
     
         if (error) {
+            setProcessing(false)
             console.log('[error]', error);
         } else {
             console.log('[PaymentMethod]', paymentMethod);
+        }
+
+        // confirm payment
+        const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+                    card: card,
+                    billing_details: {
+                    name: campaignData?.donator?.name,
+                    email: campaignData?.donator?.email,
+                },
+            },
+        })
+
+        if(paymentIntent.status === 'succeeded'){
+            try {
+                await axiosSecure.patch(`/donation/${campaignData?.petId}`, {
+                    donator : campaignData?.donator,
+                    donatedAmount : Number(amount),
+                    transactionId: paymentIntent?.id,
+                } )
+                toast.success('Donation Successful!');
+                refetch();
+                navigate('/dashboard/my-donations');
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setProcessing(false);
+            }
         }
 
     }
@@ -100,9 +132,9 @@ const CheckoutForm = ({onClose, campaignData}) => {
                 <button 
                 className="bg-gradient-to-r from-purple-700 to-purple-400 hover:from-purple-400 hover:to-purple-700 text-white px-4 py-2 rounded-lg" 
                 type="submit" 
-                disabled={!stripe}
+                disabled={!stripe || !clientSecret || processing}
                 >
-                    Pay ${donationCampaignData.amount}
+                    {processing ? <ImSpinner9 className='animate-spin mx-auto text-2xl text-white' /> : `Donate $ ${amount}`}
                 </button>
                 
                 <button
@@ -118,7 +150,8 @@ const CheckoutForm = ({onClose, campaignData}) => {
 
 CheckoutForm.propTypes = {
     onClose: PropTypes.func.isRequired,
-    campaignData : PropTypes.object
+    campaignData : PropTypes.object,
+    refetch : PropTypes.func
 };
 
 
