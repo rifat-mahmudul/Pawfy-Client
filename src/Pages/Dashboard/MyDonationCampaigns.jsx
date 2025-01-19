@@ -25,8 +25,8 @@ const MyDonationCampaigns = () => {
         },
     });
 
-    const handleAdopt = (id) => {
-        axiosSecure.patch(`/pets/adopt/${id}`, { adopted: true }).then(() => {
+    const handleTogglePause = (id, currentPauseState) => {
+        axiosSecure.patch(`/donation/${id}`, { pause: !currentPauseState }).then(() => {
             refetch();
         });
     };
@@ -48,7 +48,7 @@ const MyDonationCampaigns = () => {
             header : () => (<p className="text-center">Maximum Donation $</p>),
             cell : (info) => info.getValue()
         }),
-        columnHelper.accessor('adopted', {
+        columnHelper.accessor('donatedAmount', {
             header : () => (<p className="text-center">Progress</p>),
             cell: (info) => {
                 const donatedAmount = info.row.original.donatedAmount || 0;
@@ -73,34 +73,35 @@ const MyDonationCampaigns = () => {
         columnHelper.display({
             id: "actions",
             header: () => <p className="text-center">Actions</p>,
-            cell : ({row}) => (
+            cell: ({ row }) => (
                 <div className="flex gap-2 justify-around items-center">
                     <button
-                        onClick={() => handleAdopt(row.original._id)}
-                        className={`p-2 text-white rounded font-bold ${row.original.adopted ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'}`}
+                        onClick={() => handleTogglePause(row.original._id, row.original.pause)}
+                        className={`p-2 text-white rounded font-bold ${
+                            row.original.pause ? 'bg-pink-500' : 'bg-green-500'
+                        }`}
                     >
-                        {row.original.adopted ? 'Paused' : 'Pause'}
+                        {row.original.pause ? 'Unpause' : 'Pause'}
                     </button>
                     <button
                         onClick={() => {
-                            navigate(`/dashboard/update-pet/${row.original._id}`)
+                            navigate(`/dashboard/update-pet/${row.original._id}`);
                         }}
                         className="p-3 bg-[#0000ff64] text-white rounded"
                     >
                         <div className="text-lg text-[blue]">
-                            <FaPencil></FaPencil>
+                            <FaPencil />
                         </div>
                     </button>
-
+        
                     <button
                         onClick={() => handleAdopt(row.original._id)}
-                        className={`flex items-center space-x-1 p-3 bg-purple-500 text-white rounded`}
+                        className="flex items-center space-x-1 p-3 bg-purple-500 text-white rounded"
                     >
                         <FaEye /> <h1>Donators</h1>
                     </button>
-                    
                 </div>
-            )
+            ),
         })
     ]
     

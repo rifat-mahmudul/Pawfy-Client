@@ -24,7 +24,7 @@ const CampaignDetails = () => {
         }
     })
 
-    const {petName, maximumDonation, sortDescription, longDescription, lastDate, image, userEmail, _id} = campaign;
+    const {petName, maximumDonation, sortDescription, longDescription, lastDate, image, userEmail, _id, pause} = campaign;
 
     const campaignData = {
         petName, 
@@ -65,11 +65,12 @@ const CampaignDetails = () => {
                     <h1 className="mt-2"><span className="font-semibold">Details  :</span> {longDescription}</h1>
                     <h1 className="mt-2"><span className="font-semibold">Summery  :</span> {sortDescription}</h1>
                     <button 
+                    disabled={pause}
                     onClick={() => {
                         handleDonate(),
                         setIsModalOpen(true);
                     }}
-                    className="px-5 py-2 bg-green-500 text-white rounded-lg font-semibold mt-3 transition hover:bg-green-600"
+                    className="px-5 py-2 bg-green-500 text-white rounded-lg font-semibold mt-3 transition hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                         Donate Now
                     </button>
