@@ -10,7 +10,6 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import DonatorsModal from "@/components/Modal/DonatorsModal";
 
 
@@ -36,22 +35,15 @@ const MyDonationCampaigns = () => {
         });
     };
 
+
     const handleViewDonators = async (campaignId) => {
         setSelectedCampaign(campaignId);
-        try {
-            const { data } = await axiosSecure.get(`/campaign/${campaignId}`);
-            setDonators(data);
-            console.log(data)
-            setIsModalOpen(true);
-        } catch (error) {
-            toast.error("Failed to fetch donators");
-            console.error("Error fetching donators:", error);
-        }
+        setIsModalOpen(true);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setDonators({});
+        setDonators();
         setSelectedCampaign(null);
     };
 
@@ -225,6 +217,7 @@ const MyDonationCampaigns = () => {
             isOpen={isModalOpen}
             donators={donators}
             onClose={closeModal}
+            campaignId={selectedCampaign}
             >
             </DonatorsModal>
 
