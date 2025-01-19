@@ -19,7 +19,7 @@ const CampaignCard = ({campaign}) => {
                 <div className='flex items-center justify-between mt-2'>
                     <h1>Donated Amount : $ {'0'}</h1>
                     
-                    <Link to={`/pet-details/${_id}`}>
+                    <Link to={`/campaign-details/${_id}`}>
                         <button className='flex gap-1 items-center border border-purple-500 p-2 rounded-lg hover:bg-purple-500 hover:text-white transition-[0.5s]'>
                             <p><FaEye /></p>
                             <p>Details</p>

@@ -24,6 +24,7 @@ import Bird from "@/components/category/Bird";
 import Rabbit from "@/components/category/Rabbit";
 import Fish from "@/components/category/Fish";
 import Dog from "@/components/category/Dog";
+import CampaignDetails from "@/Pages/Main/CampaignDetails";
 
 const AppRoutes = () => {
 
@@ -48,6 +49,7 @@ const AppRoutes = () => {
                 <Route path="/register" element={<Register></Register>}></Route>
                 <Route path="/pet-listing" element={<PetListing></PetListing>}></Route>
                 <Route path="/pet-details/:id" element={<PetDetails></PetDetails>}></Route>
+                <Route path="/campaign-details/:id" element={<CampaignDetails></CampaignDetails>}></Route>
                 <Route path="/donation-campaign" element={<DonationCampaign></DonationCampaign>}></Route>
 
 
