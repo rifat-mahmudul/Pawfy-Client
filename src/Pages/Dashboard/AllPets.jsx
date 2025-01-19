@@ -78,8 +78,8 @@ const MyAddPets = () => {
             header : () => (<p className="text-center">Status</p>),
             cell : (info) => 
                 (info.getValue() ?
-                    <p className="bg-green-200 text-center py-2 rounded-lg text-green-800 font-bold">Adopted</p> : 
-                    <p className="bg-purple-300 text-center py-2 rounded-lg text-purple-900 font-bold">Not Adopted</p>
+                    <p className="bg-green-200 text-center py-1 rounded-lg text-green-800 font-bold">Adopted</p> : 
+                    <p className="bg-purple-300 text-center py-1 rounded-lg text-purple-900 font-bold">Not Adopted</p>
                 )
         }),
         columnHelper.display({

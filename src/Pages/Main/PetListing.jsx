@@ -1,4 +1,5 @@
 import PetCard from "@/components/Card/PetCard";
+import SkeletonLoader from "@/components/Loader/SkeletonLoader";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import HelmetTitle from "@/Shared/HelmetTitle";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -71,9 +72,7 @@ const PetListing = () => {
                 {/* Content Section */}
                 <div>
                     {isFetching && !isFetchingNextPage ? (
-                        <p className="flex items-center justify-center flex-col text-3xl text-purple-500 min-h-[calc(100vh-200px)] font-bold">
-                            Loading...
-                        </p>
+                        <SkeletonLoader></SkeletonLoader>
                     ) : sortedPets.length === 0 ? (
                         <p className="flex items-center justify-center flex-col text-3xl text-red-500 min-h-[calc(100vh-200px)] font-bold">
                             NO DATA FOUND

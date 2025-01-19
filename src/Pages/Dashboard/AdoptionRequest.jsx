@@ -64,7 +64,7 @@ const AdoptionRequest = () => {
             cell : (info) => {
                 const status = info.getValue();
                 return (
-                    <p className={`text-center py-2 rounded-lg font-bold ${
+                    <p className={`text-center py-1 rounded-lg font-bold ${
                         status === true ? 'bg-green-200 text-green-800' :
                         status === false ? 'bg-[#ff00003f] text-red-600' :
                         'bg-purple-300 text-purple-900 text-xs'

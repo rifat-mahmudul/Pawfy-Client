@@ -112,7 +112,40 @@ const AddDonationCampaign = () => {
                             }
                         </div>
 
+                         {/* name input */}
+                        <div className='sm:w-[48%] w-[100%]'>
+                            <h1 className='font-semibold mb-2'>Pet Name</h1>
+                            <input 
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
+                            type="text" 
+                            placeholder='Enter Pet Name'
+                            {...register('petName', {
+                                required : "Pet name is required"
+                            })}
+                            />
 
+                            {
+                                errors.petName && 
+                                <p className='text-red-500 text-sm mt-1'>{errors.petName.message}</p>
+                            }
+                        </div>
+
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-10 mt-4">
+
+                        {/* Last date of donation */}
+                        <div className='sm:w-[48%] w-[100%]'>
+                            <h1 className='font-semibold mb-2'>Last Date Of Donation</h1>
+                            <DatePicker 
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
+                            selected={startDate} 
+                            onChange={(date) => setStartDate(date)} 
+                            wrapperClassName="w-full"
+                            />
+                        </div>
+
+                        
                         {/* Maximum donation input */}
                         <div className='sm:w-[48%] w-[100%]'>
                             <h1 className='font-semibold mb-2'>Maximum Donation</h1>
@@ -130,24 +163,12 @@ const AddDonationCampaign = () => {
                                 <p className='text-red-500 text-sm mt-1'>{errors.maximumDonation.message}</p>
                             }
                         </div>
+
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-10 mt-4">
-
-                        {/* Last date of donation */}
-                        <div className='sm:w-[48%] w-[100%]'>
-                            <h1 className='font-semibold mb-2'>Last Date Of Donation</h1>
-                            <DatePicker 
-                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
-                            selected={startDate} 
-                            onChange={(date) => setStartDate(date)} 
-                            wrapperClassName="w-full"
-                            />
-                        </div>
-
-                        
+                    
                         {/* Short description */}
-                        <div className='sm:w-[48%] w-[100%]'>
+                        <div className='w-[100%] mt-4'>
                             <h1 className='font-semibold mb-2'>Short Description</h1>
                             <textarea
                             className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit '
@@ -163,7 +184,6 @@ const AddDonationCampaign = () => {
                                 <p className='text-red-500 text-sm mt-1'>{errors.sortDescription.message}</p>
                             }
                         </div>
-                    </div>
 
                     <div className="mt-4">
                         {/* Long description */}

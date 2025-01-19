@@ -59,7 +59,7 @@ const AllUser = () => {
             cell: (info) => {
                 const role = info.getValue();
                 return (
-                    <p className={`text-center py-2 rounded-lg font-bold ${
+                    <p className={`text-center py-1 rounded-lg font-bold ${
                         role === 'admin' ? 'bg-purple-300 text-purple-800' :
                         role === 'user' ? 'bg-[#00ff113f] text-green-700' :
                         'bg-purple-300 text-purple-900 text-xs'

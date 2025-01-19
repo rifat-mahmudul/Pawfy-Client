@@ -1,3 +1,4 @@
+import SkeletonLoader from "@/components/Loader/SkeletonLoader";
 import AdoptModal from "@/components/Modal/AdoptModal";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
@@ -14,7 +15,7 @@ const PetDetails = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {user} = useAuth();
 
-    const {data : pet = {}} = useQuery({
+    const {data : pet = {}, isLoading} = useQuery({
         queryKey : ['details-pet', id], 
         queryFn : async () => {
             const {data} = await axiosPublic(`/pet/${id}`);
@@ -29,6 +30,8 @@ const PetDetails = () => {
             return navigate('/login')
         }
     }
+
+    if(isLoading) return <SkeletonLoader></SkeletonLoader>
 
     return (
         <section className="pt-24 lg:pb-0 pb-16">
