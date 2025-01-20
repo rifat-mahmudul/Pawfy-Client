@@ -27,8 +27,6 @@ const CampaignDetails = () => {
 
     const activeData = recommendedData.filter(d => d.pause !== true);
 
-    console.log(activeData)
-
     const {data : campaign = {}, isLoading, refetch} = useQuery({
         queryKey : ['details-campaign', id], 
         queryFn : async () => {
