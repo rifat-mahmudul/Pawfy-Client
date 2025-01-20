@@ -35,7 +35,7 @@ const MyDonations = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await axiosSecure.delete(`/pet/${id}`)
+                    await axiosSecure.delete(`/donations/${id}`)
                     toast.success('Your donation refunded')
                 } catch (error) {
                     console.log(`error from Your donation refunded : ${error}`)
