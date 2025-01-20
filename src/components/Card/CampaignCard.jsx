@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const CampaignCard = ({campaign}) => {
 
-    const {image, petName, maximumDonation, _id} = campaign;
+    const {image, petName, maximumDonation, _id, donatedAmount} = campaign;
 
     return (
         <div className='text-center w-[270px] rounded-lg transition hover:scale-105'>
@@ -17,7 +17,7 @@ const CampaignCard = ({campaign}) => {
                 </div>
 
                 <div className='flex items-center justify-between mt-2'>
-                    <h1>Donated Amount : $ {'0'}</h1>
+                    <h1>Donated Amount : $ {donatedAmount ? donatedAmount : '0'}</h1>
                     
                     <Link to={`/campaign-details/${_id}`}>
                         <button className='flex gap-1 items-center border border-purple-500 p-2 rounded-lg hover:bg-purple-500 hover:text-white transition-[0.5s]'>
