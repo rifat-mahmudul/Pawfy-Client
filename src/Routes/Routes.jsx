@@ -26,6 +26,7 @@ import Fish from "@/components/category/Fish";
 import Dog from "@/components/category/Dog";
 import CampaignDetails from "@/Pages/Main/CampaignDetails";
 import UpdateCampaign from "@/Pages/Dashboard/UpdateCampaign";
+import Profile from "@/Pages/Profile";
 
 const AppRoutes = () => {
 
@@ -52,6 +53,7 @@ const AppRoutes = () => {
                 <Route path="/pet-details/:id" element={<PetDetails></PetDetails>}></Route>
                 <Route path="/campaign-details/:id" element={<CampaignDetails></CampaignDetails>}></Route>
                 <Route path="/donation-campaign" element={<DonationCampaign></DonationCampaign>}></Route>
+                <Route path="/profile" element={<PrivateRoute><Profile></Profile></PrivateRoute>}></Route>
 
 
                 {/* dashboard layout */}

@@ -39,9 +39,11 @@ export function DropdownMenuDemo() {
                         <button className="mx-auto text-lg">Dashboard</button>
                     </DropdownMenuItem>
                 </Link>
+                <Link to={'/profile'}>
                 <DropdownMenuItem>
                     <button className="mx-auto text-lg">My Profile</button>
                 </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                     <button onClick={handleLogOut} className="mx-auto text-lg">
                         Log out
