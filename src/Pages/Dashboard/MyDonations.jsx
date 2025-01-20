@@ -95,7 +95,7 @@ const MyDonations = () => {
 
     return (
         <section className="pb-16">
-            <HelmetTitle title="My Donation Campaigns"></HelmetTitle>
+            <HelmetTitle title="My Donations"></HelmetTitle>
 
             <div className="lg:overflow-hidden overflow-x-auto rounded-lg">
                 {

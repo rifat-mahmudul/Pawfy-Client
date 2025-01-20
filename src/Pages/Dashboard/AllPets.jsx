@@ -128,7 +128,7 @@ const MyAddPets = () => {
 
     return (
         <section className="pb-16">
-            <HelmetTitle title="My Added Pets"></HelmetTitle>
+            <HelmetTitle title="All Pets"></HelmetTitle>
 
             <div className="lg:overflow-hidden overflow-x-auto rounded-lg">
 

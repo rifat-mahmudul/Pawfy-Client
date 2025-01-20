@@ -111,7 +111,7 @@ const AdoptionRequest = () => {
 
     return (
         <section className="pb-16">
-            <HelmetTitle title="My Added Pets"></HelmetTitle>
+            <HelmetTitle title="Adoption Request"></HelmetTitle>
 
             <div className="overflow-x-auto rounded-lg">
                 {
