@@ -1,3 +1,4 @@
+import CampaignCard from "@/components/Card/CampaignCard";
 import SkeletonLoader from "@/components/Loader/SkeletonLoader";
 import PaymentModal from "@/components/Modal/Payment/PaymentModal";
 // import AdoptModal from "@/components/Modal/AdoptModal";
@@ -15,6 +16,18 @@ const CampaignDetails = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {user} = useAuth();
+
+    const {data : recommendedData = []} = useQuery({
+        queryKey : ['Recommended'],
+        queryFn : async () => {
+            const {data} = await axiosPublic('/donationCampaigns')
+            return data;
+        }
+    })
+
+    const activeData = recommendedData.filter(d => d.pause !== true);
+
+    console.log(activeData)
 
     const {data : campaign = {}, isLoading, refetch} = useQuery({
         queryKey : ['details-campaign', id], 
@@ -48,7 +61,7 @@ const CampaignDetails = () => {
     if(isLoading) return <SkeletonLoader></SkeletonLoader>
 
     return (
-        <section className="pt-24 lg:pb-0 pb-16">
+        <section className="pt-24 pb-16">
 
             <HelmetTitle title="Donation Details"></HelmetTitle>
 
@@ -84,6 +97,23 @@ const CampaignDetails = () => {
                     onClose={() => setIsModalOpen(false)}
                     user={user}
                 />
+
+            </div>
+
+            <div className="max-w-[90%] xl:max-w-[1000px] mx-auto">
+
+                <h1 className="text-3xl mb-10 text-purple-500 mt-10 font-bold">Recommended Donation</h1>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:grid-cols-3">
+                    {
+                        activeData.slice(0,3).map(data => (
+                            <CampaignCard 
+                            key={data._id}
+                            campaign={data}
+                            ></CampaignCard>
+                        ))
+                    }
+                </div>
 
             </div>
 
