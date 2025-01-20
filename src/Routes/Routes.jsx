@@ -27,6 +27,7 @@ import Dog from "@/components/category/Dog";
 import CampaignDetails from "@/Pages/Main/CampaignDetails";
 import UpdateCampaign from "@/Pages/Dashboard/UpdateCampaign";
 import Profile from "@/Pages/Profile";
+import Error from "@/Pages/Error";
 
 const AppRoutes = () => {
 
@@ -80,6 +81,7 @@ const AppRoutes = () => {
 
             </Route>
 
+            <Route path="*" element={<Error></Error>}></Route>
         </Routes>
     )
 }
