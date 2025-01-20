@@ -1,72 +1,67 @@
-import HelmetTitle from "@/Shared/HelmetTitle";
-import { useState } from "react";
-import Select from 'react-select';
+import HelmetTitle from "@/Shared/HelmetTitle"
+import { useEffect, useState } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { imageUpload } from "@/lib/utils";
 import { ImSpinner9 } from "react-icons/im";
 import { htmlToText } from 'html-to-text';
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import useRole from "@/Hooks/useRole";
 
-const UpdatePet = () => {
+const UpdateCampaign = () => {
 
-    const [selectedOption, setSelectedOption] = useState(null);
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
-    const axiosSecure = useAxiosSecure();
     const [role] = useRole();
 
     const handleDescriptionChange = (value) => {
         setDescription(value);
     };
 
-    const options = [
-        { value: 'Cat', label: 'Cat' },
-        { value: 'Dog', label: 'Dog' },
-        { value: 'Bird', label: 'Bird' },
-        { value: 'Rabbits', label: 'Rabbits' },
-        { value: 'Mouse', label: 'Mouse' },
-    ];
-
     const { id } = useParams();
-    const { data: pet = {}, refetch } = useQuery({
+    const { data: campaign = {}, refetch } = useQuery({
         queryKey: ['singlePet', id],
         queryFn: async () => {
-            const { data } = await axiosSecure(`/pet/${id}`);
+            const { data } = await axiosSecure(`/campaign/${id}`);
             return data;
         }
     });
 
-    const { petName, petAge, location, sortDescription, category, longDescription, image, _id } = pet;
+    const { petName, maximumDonation, sortDescription, longDescription, image, _id } = campaign;
 
+    const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
 
-    const { mutateAsync } = useMutation({
-        mutationFn: async petData => {
-            const { data } = await axiosSecure.patch(`/pet/${_id}`, petData);
+    useEffect(() => {
+        if (campaign.lastDate) {
+            setStartDate(new Date(campaign.lastDate));
+        }
+    }, [campaign.lastDate]); 
+
+    const {mutateAsync} = useMutation({
+        mutationFn : async (petData) => {
+            const {data} = await axiosSecure.patch(`/donationCampaign/${_id}`, petData)
             return data;
         }
-    });
+    })
+
+    const [startDate, setStartDate] = useState(new Date());
 
     const handleSubmit = async e => {
-        e.preventDefault();
         setLoading(true);
-        const plainTextDescription = htmlToText(description);
-
+        e.preventDefault();
         const form = e.target;
         const petName = form.elements.petName.value;
-        const petAge = form.elements.petAge.value;
-        const location = form.elements.location.value;
+        const maximumDonation = form.elements.maximumDonation.value;
         const sortDescription = form.elements.sortDescription.value;
-        const category = selectedOption?.value;
         const image = form.image.files;
-        let imageUrl = pet.image;
+        let imageUrl = campaign.image;
+        const plainTextDescription = htmlToText(description);
 
         if (image.length > 0) {
             const uploadResponse = await imageUpload(image);
@@ -75,35 +70,36 @@ const UpdatePet = () => {
 
         const petData = {
             petName,
-            petAge,
-            location,
+            maximumDonation,
             sortDescription,
-            category,
             longDescription: plainTextDescription,
-            image: imageUrl
+            image: imageUrl,
+            lastDate : startDate
         };
 
+        
         try {
             await mutateAsync(petData);
-            toast.success('Pet updated successfully!');
+            toast.success('Campaign Update successfully!');
             if(role === 'admin') {
-                navigate('/dashboard/all-pets');
+                navigate('/dashboard/all-donations');
             }
             else{
-                navigate('/dashboard/my-added-pets');
+                navigate('/dashboard/my-donation-campaign');
             }
         } catch (error) {
-            console.log('Error from update pets:', error);
-            toast.error('Update failed. Please try again!');
+            console.log('error from Campaign Update',error);
+            toast.error('Donation Campaign Update. Please try again!')
         }
         refetch();
-        setLoading(false);
-    };
+        setLoading(false)
+    }
+
 
     return (
         <section className="pb-16">
-            <HelmetTitle title="Update Pet"></HelmetTitle>
-
+            <HelmetTitle title="Update My Added Campaign"></HelmetTitle>
+            
             <div>
 
                 <form onSubmit={handleSubmit}>
@@ -137,68 +133,59 @@ const UpdatePet = () => {
                             </div>
                         </div>
 
-                        {/* name input */}
+                         {/* name input */}
                         <div className='sm:w-[48%] w-[100%]'>
                             <h1 className='font-semibold mb-2'>Pet Name</h1>
                             <input 
-                                className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
-                                type="text" 
-                                placeholder='Enter Pet Name'
-                                name='petName'
-                                defaultValue={petName}
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
+                            type="text" 
+                            name='petName'
+                            defaultValue={petName}
                             />
                         </div>
+
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center gap-10 mt-4">
-                        {/* Pet age */}
+
+                        {/* Last date of donation */}
                         <div className='sm:w-[48%] w-[100%]'>
-                            <h1 className='font-semibold mb-2'>Pet Age</h1>
-                            <input 
-                                className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
-                                type="text" 
-                                placeholder='Enter Pet Age'
-                                name='petAge'
-                                defaultValue={petAge}
+                            <h1 className='font-semibold mb-2'>Last Date Of Donation</h1>
+                            <DatePicker 
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
+                            selected={startDate} 
+                            onChange={(date) => setStartDate(date)} 
+                            wrapperClassName="w-full"
                             />
                         </div>
 
-                        {/* Pet Category */}
+                        
+                        {/* Maximum donation input */}
                         <div className='sm:w-[48%] w-[100%]'>
-                            <h1 className='font-semibold mb-2'>Pet Category</h1>
-                            <Select
-                                defaultValue={options.find(option => option.value === category) || null}
-                                onChange={setSelectedOption}
-                                options={options}
+                            <h1 className='font-semibold mb-2'>Maximum Donation</h1>
+                            <input 
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
+                            type="number" 
+                            placeholder='Enter maximum donation'
+                            name="maximumDonation"
+                            defaultValue={maximumDonation}
                             />
                         </div>
+
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-10 mt-4">
-                        {/* Pet location */}
-                        <div className='sm:w-[48%] w-[100%]'>
-                            <h1 className='font-semibold mb-2'>Pet Location</h1>
-                            <input 
-                                className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
-                                type="text" 
-                                placeholder='Enter Pet Location'
-                                name='location'
-                                defaultValue={location}
-                            />
-                        </div>
-
+                    
                         {/* Short description */}
-                        <div className='sm:w-[48%] w-[100%]'>
+                        <div className='w-[100%] mt-4'>
                             <h1 className='font-semibold mb-2'>Short Description</h1>
                             <textarea
-                                className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit'
-                                placeholder="Enter short description here...."
-                                name='sortDescription'
-                                defaultValue={sortDescription}
+                            className='border border-purple-500 outline-0 p-3 w-full rounded-lg focus:border-2 bg-inherit '
+                            placeholder="Enter short description here...."
+                            name='sortDescription'
+                            defaultValue={sortDescription}
                             >
                             </textarea>
                         </div>
-                    </div>
 
                     <div className="mt-4">
                         {/* Long description */}
@@ -224,7 +211,7 @@ const UpdatePet = () => {
 
             </div>
         </section>
-    );
-};
+    )
+}
 
-export default UpdatePet;
+export default UpdateCampaign

@@ -101,7 +101,7 @@ const MyDonationCampaigns = () => {
                     </button>
                     <button
                         onClick={() => {
-                            navigate(`/dashboard/update-pet/${row.original._id}`);
+                            navigate(`/dashboard/update-campaign/${row.original._id}`);
                         }}
                         className="p-3 bg-[#0000ff64] text-white rounded"
                     >
