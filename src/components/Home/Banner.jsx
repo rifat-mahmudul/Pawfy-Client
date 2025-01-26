@@ -13,12 +13,12 @@ const Banner = () => {
 
                 <div className='flex flex-col sm:flex-row items-center justify-between'>
                     
-                    <div className='sm:pt-36 lg:py-0 sm:w-[48%]'>
-                        <h1 className='text-4xl max-w-2xl uppercase font-russo'>Give a Paw, Gain a Lifetime of Love</h1>
+                    <div className='pt-20 sm:pt-36 lg:py-0 mb-14 sm:w-[48%]'>
+                        <h1 className='sm:text-5xl text-3xl max-w-2xl uppercase font-russo'>Give a Paw, Gain a Lifetime of Love</h1>
 
                         <p className={`mx-auto mt-3 text-lg ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Adopting a pet is an act of kindness. Take the leap, find a friend, and build a bond that lasts forever. Your journey of unconditional love starts here.</p>
 
-                        <Link>
+                        <Link to={'/pet-listing'}>
                             <button className='py-3 px-10 font-bold text-lg bg-purple-700 rounded-lg text-white mt-4'>Adopt Now</button>
                         </Link>
                     </div>
