@@ -2,13 +2,20 @@ import PropTypes from 'prop-types'
 import { IoLocationOutline } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { Link } from 'react-router';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
 
 const PetCard = ({pet}) => {
 
     const {image, petName, petAge, location, _id} = pet;
 
+    useEffect(() => {
+            AOS.init();
+    }, []);
+
     return (
-        <div className='text-center w-[270px] rounded-lg transition hover:scale-105'>
+        <div data-aos="fade-up"  data-aos-duration="1000" className='text-center w-[270px] rounded-lg transition hover:scale-105'>
             <img className='h-[220px] w-[270px] rounded-t-lg' src={image} alt="" />
 
             <div className='bg-[#80808042] rounded-b-lg px-1 pb-2'>

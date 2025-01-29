@@ -16,7 +16,7 @@ const Banner = () => {
     return (
         <section className='min-h-screen flex items-center justify-center bg-gradient-to-b from-[#efadef00] via-[#8000804e] to-[#800080c5]'>
 
-            <div className='max-w-[90%] xl:max-w-[1100px] mx-auto relative'>
+            <div className='max-w-[90%] xl:max-w-[1100px] mx-auto relative overflow-hidden'>
 
                 <div className='flex flex-col sm:flex-row items-center justify-between'>
                     
