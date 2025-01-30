@@ -20,6 +20,14 @@ const useDashNav = () => {
         role === 'admin' && <>
             <DashNavItem 
             setDashNavOpen={setDashNavOpen} 
+            navTitle="Statistics" 
+            address="statistics" 
+            icon={<FaUsers />}
+            >
+            </DashNavItem>
+            
+            <DashNavItem 
+            setDashNavOpen={setDashNavOpen} 
             navTitle="Users" 
             address="users" 
             icon={<FaUsers />}

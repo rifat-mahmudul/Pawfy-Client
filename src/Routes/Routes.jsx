@@ -28,6 +28,7 @@ import CampaignDetails from "@/Pages/Main/CampaignDetails";
 import UpdateCampaign from "@/Pages/Dashboard/UpdateCampaign";
 import Profile from "@/Pages/Profile";
 import Error from "@/Pages/Error";
+import Statistics from "@/Pages/Dashboard/Statistics";
 
 const AppRoutes = () => {
 
@@ -60,9 +61,10 @@ const AppRoutes = () => {
                 {/* dashboard layout */}
                 <Route path="/dashboard" element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}>
 
-                    <Route index element={<Navigate to="users" replace />} />
+                    <Route index element={<Navigate to="statistics" replace />} />
 
                     {/* admin route only */}
+                    <Route path="statistics" element={<PrivateRoute><AdminRoute><Statistics></Statistics></AdminRoute></PrivateRoute>}></Route>
                     <Route path="users" element={<PrivateRoute><AdminRoute><AllUser></AllUser></AdminRoute></PrivateRoute>}></Route>
                     <Route path="/dashboard/all-pets" element={<PrivateRoute><AdminRoute><AllPets></AllPets></AdminRoute></PrivateRoute>}></Route>
                     <Route path="/dashboard/all-donations" element={<PrivateRoute><AdminRoute><AllDonations></AllDonations></AdminRoute></PrivateRoute>}></Route>
