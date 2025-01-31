@@ -21,6 +21,16 @@ const Statistics = () => {
         },
     });
 
+    const { data: allDonation = [] } = useQuery({
+        queryKey: ["all-donation"],
+        queryFn: async () => {
+            const { data } = await axiosSecure(`/all-donations`);
+            return data;
+        },
+    });
+
+    const totalDonation = allDonation.reduce((acc, donation) => acc + donation.donatorData.donatedAmount, 0);
+
     
   return (
     <section>
@@ -38,7 +48,7 @@ const Statistics = () => {
 
             <div className="bg-gradient-to-r from-orange-700 via-orange-500 to-orange-200 p-4 rounded-lg text-center shadow-xl shadow-orange-900">
                 <h1 className="text-4xl text-white font-bold">Total Donation</h1>
-                <h1 className="mt-2 text-2xl font-semibold text-white">{pets.length}$</h1>
+                <h1 className="mt-2 text-2xl font-semibold text-white">{totalDonation}$</h1>
             </div>
 
         </div>
