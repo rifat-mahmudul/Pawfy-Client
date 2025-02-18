@@ -64,7 +64,7 @@ const Statistics = () => {
                 <h1 className="text-center mt-2 text-xl font-bold">Donation Report</h1>
             </div>
 
-            <div>
+            <div className="mt-5">
                 <Calendar />
             </div>
 
