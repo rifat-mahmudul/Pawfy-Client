@@ -15,8 +15,8 @@ const PetCard = ({pet}) => {
     }, []);
 
     return (
-        <div data-aos="fade-up"  data-aos-duration="1000" className='text-center w-[270px] rounded-lg transition hover:scale-105'>
-            <img className='h-[220px] w-[270px] rounded-t-lg' src={image} alt="" />
+        <div data-aos="fade-up"  data-aos-duration="1000" className='text-center w-[270px] rounded-lg transition hover:scale-105 overflow-hidden'>
+            <img className='h-[220px] w-[270px] rounded-t-lg hover:scale-110 transition' src={image} alt="" />
 
             <div className='bg-[#80808042] rounded-b-lg px-1 pb-2'>
                 <div className='flex items-center justify-between pt-3'>
