@@ -8,6 +8,14 @@ const Statistics = () => {
 
     const axiosSecure = useAxiosSecure();
 
+    const { data: users = [] } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+          const { data } = await axiosSecure('/users');
+          return data;
+        },
+    });
+
     const { data: pets = [] } = useQuery({
         queryKey: ["total-pets"],
         queryFn: async () => {
@@ -37,7 +45,12 @@ const Statistics = () => {
     
   return (
     <section className="pb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-10">
+
+            <div className="bg-gradient-to-r from-blue-700 via-blue-500 to-blue-200 p-4 rounded-lg text-center shadow-xl shadow-purple-900">
+                <h1 className="text-4xl text-white font-bold">Total User</h1>
+                <h1 className="mt-2 text-2xl font-semibold text-white">{users.length}</h1>
+            </div>
 
             <div className="bg-gradient-to-r from-purple-700 via-purple-500 to-purple-200 p-4 rounded-lg text-center shadow-xl shadow-purple-900">
                 <h1 className="text-4xl text-white font-bold">Total Pets</h1>
