@@ -36,7 +36,7 @@ const CallToAction = () => {
                     </Link>
                     <a
                         href={'#aboutUs'}
-                        className="px-6 py-3 bg-white text-purple-600 hover:text-purple-700 hover:bg-gray-200 transition rounded-lg font-semibold text-lg"
+                        className="px-6 py-3 bg-white text-purple-600 hover:bg-purple-500 hover:text-white transition rounded-lg font-semibold text-lg"
                     >
                         Learn About Adoption Benefits
                     </a>
